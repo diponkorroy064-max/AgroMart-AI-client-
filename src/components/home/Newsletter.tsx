@@ -1,11 +1,10 @@
 "use client";
-
 import React, { useState } from 'react';
-import { Mail, Leaf, Bell, BadgePercent, CheckCircle, Icon as LucideIcon } from 'lucide-react';
+import {Leaf, Bell, BadgePercent, CheckCircle, LucideProps } from 'lucide-react';
 
 interface Benefit {
   text: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<LucideProps>;
 }
 
 const benefits: Benefit[] = [
@@ -44,11 +43,12 @@ const Newsletter: React.FC = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);
-    setEmail(''); // Clear email input after successful submission
+    setEmail('');
   };
 
+
   return (
-    <section className="py-16 bg-gradient-to-r from-green-600 to-emerald-700 text-white">
+    <section className="py-16 bg-linear-to-r from-green-600 to-emerald-700 text-white">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-xl shadow-2xl p-8 md:p-12 text-gray-800">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">

@@ -6,14 +6,14 @@ import {
   ShoppingCart,
   MapPin,
   Smile,
-  Icon as LucideIcon
+  LucideProps,
 } from 'lucide-react';
 
 interface Statistic {
   value: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<LucideProps>;
 }
 
 const statistics: Statistic[] = [
@@ -57,7 +57,7 @@ const statistics: Statistic[] = [
 
 const Statistics: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-green-50 to-emerald-100 relative overflow-hidden">
+    <section className="py-16 bg-linear-to-br from-green-50 to-emerald-100 relative overflow-hidden">
       {/* Subtle background pattern/gradient */}
       <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 60V0h60L0 60z'/%3E%3Cpath d='M60 60V0H0L60 60z'/%3E%3C/g%3E%3C/svg%3E")` }}></div>
 
@@ -85,7 +85,7 @@ const Statistics: React.FC = () => {
                 {stat.value}
               </h3>
               <p className="text-xl font-semibold text-gray-800 mb-2">{stat.title}</p>
-              <p className="text-gray-600 text-base flex-grow">{stat.description}</p>
+              <p className="text-gray-600 text-base grow">{stat.description}</p>
             </div>
           ))}
         </div>

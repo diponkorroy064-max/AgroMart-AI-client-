@@ -1,18 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
-import {
-  UserPlus,
-  Search,
-  ShoppingCart,
-  Truck,
-  Icon as LucideIcon
-} from 'lucide-react';
+import { UserPlus, Search, ShoppingCart, Truck } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
+
 
 interface Step {
   number: string;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<LucideProps>;
 }
 
 const steps: Step[] = [
@@ -73,16 +69,13 @@ const HowItWorks: React.FC = () => {
           {steps.map((step, index) => (
             <div
               key={index}
-              className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center
-                         transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl
-                         h-full z-10" // Ensures equal card height and stacking context
-            >
+              className="relative bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl h-full z-10">
               <div className="text-5xl font-extrabold text-green-200 mb-4">{step.number}</div>
               <div className="text-green-600 mb-4">
                 <step.icon size={48} strokeWidth={1.5} />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">{step.title}</h3>
-              <p className="text-gray-600 text-base flex-grow">{step.description}</p>
+              <p className="text-gray-600 text-base grow">{step.description}</p>
             </div>
           ))}
         </div>
@@ -104,6 +97,7 @@ const HowItWorks: React.FC = () => {
     </section>
   );
 };
+
 
 // Helper component for the arrow icon (if not directly importable from lucide-react in this exact way)
 const ArrowRightIcon: React.FC<{ className?: string }> = ({ className }) => (

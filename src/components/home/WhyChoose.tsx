@@ -6,13 +6,13 @@ import {
   CreditCard,
   Truck,
   LifeBuoy,
-  Icon as LucideIcon // Alias to avoid conflict if any
+  LucideProps
 } from 'lucide-react';
 
 interface Feature {
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<LucideProps>;
 }
 
 const features: Feature[] = [
@@ -71,7 +71,7 @@ const WhyChoose: React.FC = () => {
                 <feature.icon size={48} strokeWidth={1.5} />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
-              <p className="text-gray-600 text-base flex-grow">{feature.description}</p>
+              <p className="text-gray-600 text-base grow">{feature.description}</p>
             </div>
           ))}
         </div>

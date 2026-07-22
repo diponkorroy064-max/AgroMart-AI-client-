@@ -1,10 +1,11 @@
 import React from 'react';
-import { Star, Icon as LucideIcon } from 'lucide-react';
+import { Star} from 'lucide-react';
+import Image from 'next/image';
 
 interface Testimonial {
   name: string;
   role: 'Farmer' | 'Buyer' | 'Seller';
-  rating: number; // 1-5
+  rating: number;
   text: string;
   location: string;
   avatar: string;
@@ -63,7 +64,7 @@ const testimonials: Testimonial[] = [
 
 const Testimonials: React.FC = () => {
   return (
-    <section className="py-16 bg-gradient-to-r from-green-50 to-emerald-50">
+    <section className="py-16 bg-linear-to-r from-green-50 to-emerald-50">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-green-800">What Our Customers Say</h2>
@@ -76,12 +77,10 @@ const Testimonials: React.FC = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg p-8 flex flex-col justify-between
-                         transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl
-                         group" // Group for hover effects on children if needed
+              className="bg-white rounded-xl shadow-lg p-8 flex flex-col justify-between transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl group" 
             >
               <div className="flex items-center mb-4">
-                <img
+                <Image height={100} width={100}
                   src={testimonial.avatar}
                   alt={`Avatar of ${testimonial.name}`}
                   className="w-16 h-16 rounded-full object-cover mr-4 border-2 border-green-300"
@@ -102,7 +101,7 @@ const Testimonials: React.FC = () => {
                 ))}
               </div>
 
-              <p className="text-gray-700 text-base mb-4 flex-grow">
+              <p className="text-gray-700 text-base mb-4 grow">
                 &quot;{testimonial.text}&quot;
               </p>
 
