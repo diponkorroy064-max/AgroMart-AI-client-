@@ -1,83 +1,41 @@
-import React from 'react';
-import {
-  Brain,
-  ShieldCheck,
-  LeafyGreen,
-  CreditCard,
-  Truck,
-  LifeBuoy,
-  LucideProps
-} from 'lucide-react';
+import React from "react";
+import { whyChooseFeatures } from "@/data/home-data";
 
-interface Feature {
-  title: string;
-  description: string;
-  icon: React.ComponentType<LucideProps>;
-}
-
-const features: Feature[] = [
-  {
-    title: 'AI Product Recommendation',
-    description: 'Personalized recommendations based on user interests.',
-    icon: Brain,
-  },
-  {
-    title: 'Trusted Sellers',
-    description: 'Every seller is verified before joining the marketplace.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Fresh Farm Products',
-    description: 'Buy directly from farmers without unnecessary middlemen.',
-    icon: LeafyGreen,
-  },
-  {
-    title: 'Secure Payments',
-    description: 'Safe and reliable payment experience.',
-    icon: CreditCard,
-  },
-  {
-    title: 'Fast Delivery',
-    description: 'Quick delivery across the country.',
-    icon: Truck,
-  },
-  {
-    title: '24/7 Customer Support',
-    description: 'Dedicated support whenever customers need help.',
-    icon: LifeBuoy,
-  },
-];
-
-const WhyChoose: React.FC = () => {
+export default function WhyChoose() {
   return (
-    <section className="py-16 bg-gray-100">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-green-800">Why Choose AgroMart AI?</h2>
-          <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
-            We connect farmers and buyers through a modern, secure, and AI-powered marketplace.
+    <section className="py-12 sm:py-16 bg-white border-b border-gray-100">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-12">
+          <span className="inline-flex items-center px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-2.5 border border-emerald-100">
+            আমাদের বৈশিষ্ট্য
+          </span>
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            কেন অ্যাগ্রোমার্ট এআই বেছে নেবেন?
+          </h2>
+          <p className="mt-2.5 text-xs sm:text-sm md:text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            আধুনিক প্রযুক্তি ও আস্থার মেলবন্ধনে কৃষক ও ভোক্তার মধ্যে সরাসরি সংযোগ
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {whyChooseFeatures.map((item, idx) => (
             <div
-              key={index}
-              className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center
-                         transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl
-                         h-full" // Ensure equal card height
+              key={idx}
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-gray-100 shadow-2xs hover:border-emerald-200 hover:shadow-xs transition flex flex-col items-start"
             >
-              <div className="text-green-600 mb-4">
-                <feature.icon size={48} strokeWidth={1.5} />
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3 shrink-0">
+                <item.icon className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
-              <p className="text-gray-600 text-base grow">{feature.description}</p>
+              <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1.5">
+                {item.title}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                {item.description}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default WhyChoose;
+}

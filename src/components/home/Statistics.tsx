@@ -1,97 +1,44 @@
-import React from 'react';
-import {
-  Users,
-  Sprout,
-  Package,
-  ShoppingCart,
-  MapPin,
-  Smile,
-  LucideProps,
-} from 'lucide-react';
+import React from "react";
+import { marketplaceStatistics } from "@/data/home-data";
 
-interface Statistic {
-  value: string;
-  title: string;
-  description: string;
-  icon: React.ComponentType<LucideProps>;
-}
-
-const statistics: Statistic[] = [
-  {
-    value: '10,000+',
-    title: 'Registered Users',
-    description: 'Our vibrant community is growing daily.',
-    icon: Users,
-  },
-  {
-    value: '2,500+',
-    title: 'Farmers',
-    description: 'Connecting directly with producers.',
-    icon: Sprout,
-  },
-  {
-    value: '5,000+',
-    title: 'Products',
-    description: 'A diverse range of agricultural goods.',
-    icon: Package,
-  },
-  {
-    value: '15,000+',
-    title: 'Successful Orders',
-    description: 'Delivering fresh produce to your doorstep.',
-    icon: ShoppingCart,
-  },
-  {
-    value: '64',
-    title: 'District Coverage',
-    description: 'Reaching every corner of Bangladesh.',
-    icon: MapPin,
-  },
-  {
-    value: '98%',
-    title: 'Customer Satisfaction',
-    description: 'Our commitment to quality and service.',
-    icon: Smile,
-  },
-];
-
-const Statistics: React.FC = () => {
+export default function Statistics() {
   return (
-    <section className="py-16 bg-linear-to-br from-green-50 to-emerald-100 relative overflow-hidden">
-      {/* Subtle background pattern/gradient */}
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.1' fill-rule='evenodd'%3E%3Cpath d='M0 60V0h60L0 60z'/%3E%3Cpath d='M60 60V0H0L60 60z'/%3E%3C/g%3E%3C/svg%3E")` }}></div>
-
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-green-800">Trusted by Thousands of Farmers and Buyers</h2>
-          <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-            Our growing agricultural marketplace is connecting farmers, sellers, and customers across Bangladesh.
+    <section className="py-12 sm:py-16 bg-gray-50/60 border-b border-gray-100">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-4xl mx-auto mb-10">
+          <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-2 border border-emerald-100">
+            আমাদের অর্জন
+          </span>
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight">
+            হাজারো কৃষক ও ক্রেতার আস্থার প্রতীক
+          </h2>
+          <p className="mt-2 text-xs sm:text-sm md:text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            সারা দেশের খামারি, কৃষি উদ্যোক্তা ও ভোক্তাদের এক ছাদের নিচে নির্ভরযোগ্য সমাধান
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {statistics.map((stat, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {marketplaceStatistics.map((stat, idx) => (
             <div
-              key={index}
-              className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center text-center
-                         transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-xl
-                         h-full" // Ensures equal card height
+              key={idx}
+              className="p-4 rounded-xl bg-white border border-gray-100 shadow-2xs text-center flex flex-col items-center justify-center hover:border-emerald-200 transition"
             >
-              <div className="text-green-600 mb-4">
-                <stat.icon size={48} strokeWidth={1.5} />
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center mb-2 shrink-0">
+                <stat.icon className="w-4 h-4" />
               </div>
-              <h3 className="text-5xl font-extrabold text-green-700 mb-2">
-                {/* TODO: Implement react-countup for number animation if dependency is added */}
+              <p className="text-xl sm:text-2xl font-black text-emerald-700 tracking-tight mb-0.5">
                 {stat.value}
+              </p>
+              <h3 className="text-xs sm:text-sm font-bold text-gray-800 mb-1">
+                {stat.title}
               </h3>
-              <p className="text-xl font-semibold text-gray-800 mb-2">{stat.title}</p>
-              <p className="text-gray-600 text-base grow">{stat.description}</p>
+              <p className="text-[11px] text-gray-400 leading-snug line-clamp-2">
+                {stat.description}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default Statistics;
+}

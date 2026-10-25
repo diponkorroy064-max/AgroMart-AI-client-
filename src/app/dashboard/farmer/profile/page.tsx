@@ -1,260 +1,198 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import withAuth from "@/hooks/withAuth";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { Button } from "@/components/ui/Button";
-
+import { useAuth } from "@/contexts/AuthContext";
+import ProfileEditModal, { getFileUrl } from "@/components/dashboard/ProfileEditModal";
 import {
   User,
   Mail,
   Phone,
   MapPin,
-  Calendar,
   Leaf,
-  Package,
-  ShoppingCart,
-  DollarSign,
   Edit,
   ShieldCheck,
+  FileText,
+  ExternalLink,
+  Sparkles,
 } from "lucide-react";
+import { getRoleNameInBangla } from "@/constants/navigation";
 
 const FarmerProfilePage = () => {
+  const { user } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const breadcrumb = [
-    { label: "Dashboard", href: "/dashboard/farmer" },
-    { label: "Profile" },
+    { label: "ড্যাশবোর্ড", href: "/dashboard/farmer" },
+    { label: "খামারি প্রোফাইল" },
   ];
 
   return (
     <div className="space-y-8">
-      <DashboardHeader title="My Profile" breadcrumb={breadcrumb} />
+      <DashboardHeader title="আমার প্রোফাইল ও ডকুমেন্টস" breadcrumb={breadcrumb} />
 
-      {/* Cover */}
-      <div className="rounded-2xl overflow-hidden shadow bg-white">
-        <div className="h-40 bg-gradient-to-r from-green-700 to-green-500"></div>
+      {/* Cover and Profile Banner */}
+      <div className="rounded-2xl overflow-hidden shadow-sm bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+        <div className="h-40 bg-linear-to-r from-emerald-700 via-green-600 to-teal-700"></div>
 
-        <div className="px-8 pb-8">
-          <div className="-mt-16 flex flex-col md:flex-row md:items-end md:justify-between">
-
+        <div className="px-6 sm:px-8 pb-8">
+          <div className="-mt-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div className="flex items-end gap-5">
-              <img
-                src="https://i.pravatar.cc/200"
-                alt="Profile"
-                className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
-              />
+              {/* Profile Picture */}
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-4 border-white dark:border-gray-800 bg-linear-to-tr from-emerald-600 to-green-500 text-white flex items-center justify-center font-black text-4xl shadow-md shrink-0 overflow-hidden">
+                {user?.avatar ? (
+                  <img
+                    src={getFileUrl(user.avatar)}
+                    alt={user.name || "Profile"}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>{user?.name ? user.name.charAt(0).toUpperCase() : "U"}</span>
+                )}
+              </div>
 
-              <div className="pb-3">
-                <h2 className="text-3xl font-bold">
-                  John Doe
+              <div className="pb-2">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                  {user?.name || "সম্মানিত খামারি"}
                 </h2>
 
-                <p className="text-green-700 font-medium">
-                  Farmer
+                <p className="text-emerald-700 dark:text-emerald-400 font-semibold text-sm">
+                  {getRoleNameInBangla(user?.role)}
                 </p>
 
-                <div className="flex items-center gap-2 mt-2 text-gray-500">
-                  <ShieldCheck size={18} className="text-green-600" />
-                  Verified Seller
+                <div className="flex items-center gap-1.5 mt-1.5 text-xs text-emerald-800 dark:text-emerald-300 font-medium">
+                  <ShieldCheck size={16} className="text-emerald-600" />
+                  <span>যাচাইকৃত স্মার্ট খামারি</span>
                 </div>
               </div>
             </div>
 
-            <Button className="mt-6 md:mt-0">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Profile
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="mt-4 md:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-xs gap-2 px-5 py-2.5 font-semibold cursor-pointer"
+            >
+              <Edit className="h-4 w-4" />
+              <span>প্রোফাইল ও ছবি/PDF সম্পাদনা</span>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-
-      <div className="grid md:grid-cols-3 gap-6">
-
-        <DashboardCard title="Products">
-          <div className="flex items-center gap-4">
-            <Package className="text-green-600" size={36} />
-            <div>
-              <h3 className="text-3xl font-bold">25</h3>
-              <p className="text-gray-500">Products Listed</p>
-            </div>
-          </div>
-        </DashboardCard>
-
-        <DashboardCard title="Orders">
-          <div className="flex items-center gap-4">
-            <ShoppingCart className="text-blue-600" size={36} />
-            <div>
-              <h3 className="text-3xl font-bold">120</h3>
-              <p className="text-gray-500">Completed Orders</p>
-            </div>
-          </div>
-        </DashboardCard>
-
-        <DashboardCard title="Revenue">
-          <div className="flex items-center gap-4">
-            <DollarSign className="text-yellow-600" size={36} />
-            <div>
-              <h3 className="text-3xl font-bold">$4,580</h3>
-              <p className="text-gray-500">Total Earnings</p>
-            </div>
-          </div>
-        </DashboardCard>
-
-      </div>
-
-      {/* Information */}
-
+      {/* Personal, Farm and Verification Documents */}
       <div className="grid lg:grid-cols-2 gap-6">
-
-        <DashboardCard title="Personal Information">
-
-          <div className="space-y-5">
-
+        {/* Personal Information */}
+        <DashboardCard title="ব্যক্তিগত তথ্য">
+          <div className="space-y-4 pt-1">
             <div className="flex items-center gap-3">
-              <User className="text-green-600" />
+              <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                <User size={18} />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Full Name</p>
-                <p className="font-semibold">John Doe</p>
+                <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold">পূর্ণ নাম</p>
+                <p className="font-bold text-gray-900 dark:text-white text-sm">{user?.name || "দেওয়া হয়নি"}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Mail className="text-green-600" />
+              <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                <Mail size={18} />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Email</p>
-                <p className="font-semibold">
-                  johndoe@gmail.com
-                </p>
+                <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold">ইমেইল ঠিকানা</p>
+                <p className="font-bold text-gray-900 dark:text-white text-sm">{user?.email || "দেওয়া হয়নি"}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <Phone className="text-green-600" />
+              <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                <Phone size={18} />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Phone</p>
-                <p className="font-semibold">
-                  +880 1712-345678
-                </p>
+                <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold">মোবাইল নম্বর</p>
+                <p className="font-bold text-gray-900 dark:text-white text-sm">{user?.phone || "+৮৮০ ১৭১২-৩৪৫৬৭৮"}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
-              <MapPin className="text-green-600" />
+              <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                <MapPin size={18} />
+              </div>
               <div>
-                <p className="text-gray-500 text-sm">Location</p>
-                <p className="font-semibold">
-                  Dhaka, Bangladesh
-                </p>
+                <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold">ঠিকানা ও এলাকা</p>
+                <p className="font-bold text-gray-900 dark:text-white text-sm">{user?.address || "ঢাকা, বাংলাদেশ"}</p>
               </div>
             </div>
-
-            <div className="flex items-center gap-3">
-              <Calendar className="text-green-600" />
-              <div>
-                <p className="text-gray-500 text-sm">Joined</p>
-                <p className="font-semibold">
-                  July 2026
-                </p>
-              </div>
-            </div>
-
           </div>
-
         </DashboardCard>
 
-        <DashboardCard title="Farm Information">
+        {/* Verification Document PDF Card */}
+        <DashboardCard title="যাচাইকরণ ডকুমেন্ট ও সনদ (PDF)">
+          <div className="space-y-4 pt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              আপনার খামার, এনআইডি (NID) বা সরকারি কৃষি প্রত্যয়নপত্রের স্ক্যান কপি PDF ফরম্যাটে যুক্ত রাখুন।
+            </p>
 
-          <div className="space-y-5">
+            {user?.documentPdf ? (
+              <div className="p-4 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-10 h-10 rounded-xl bg-red-100 text-red-600 dark:bg-red-950/80 dark:text-red-400 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                    PDF
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                      {user.documentName || "সংযুক্ত ডকুমেন্ট সনদ"}
+                    </p>
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                      <ShieldCheck size={12} /> যাচাইয়ের জন্য সংরক্ষিত
+                    </span>
+                  </div>
+                </div>
 
-            <div className="flex items-center gap-3">
-              <Leaf className="text-green-600" />
-              <div>
-                <p className="text-gray-500 text-sm">Farm Name</p>
-                <p className="font-semibold">
-                  Green Valley Farm
+                <a
+                  href={getFileUrl(user.documentPdf)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition"
+                >
+                  <span>PDF দেখুন</span>
+                  <ExternalLink size={12} />
+                </a>
+              </div>
+            ) : (
+              <div className="p-4 rounded-xl border border-dashed border-gray-200 dark:border-gray-700 text-center space-y-2 bg-gray-50/50 dark:bg-gray-800/40">
+                <FileText className="w-8 h-8 text-gray-400 mx-auto" />
+                <p className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                  কোনো ভেরিফিকেশন PDF ডকুমেন্ট এখনো আপলোড করা হয়নি
                 </p>
+                <Button
+                  size="sm"
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs rounded-xl"
+                >
+                  এখনই PDF আপলোড করুন
+                </Button>
               </div>
-            </div>
+            )}
 
-            <div>
-              <p className="text-gray-500 text-sm mb-2">
-                About Farm
-              </p>
-
-              <p className="text-gray-700 leading-7">
-                We produce fresh organic vegetables,
-                fruits, grains, and natural honey using
-                eco-friendly farming practices.
+            {/* Farm Bio */}
+            <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+              <p className="text-gray-400 dark:text-gray-500 text-xs font-semibold mb-1">খামারের পরিচিতি ও বায়ো</p>
+              <p className="text-gray-700 dark:text-gray-300 text-xs leading-relaxed">
+                {user?.bio || "আমরা পরিবেশবান্ধব ও টেকসই পদ্ধতিতে উন্নত জাতের ধান, গম এবং শাকসবজি উৎপাদন করি।"}
               </p>
             </div>
-
-            <div>
-              <p className="text-gray-500 text-sm mb-2">
-                Specialties
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  Organic Vegetables
-                </span>
-
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  Fruits
-                </span>
-
-                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  Honey
-                </span>
-
-              </div>
-            </div>
-
           </div>
-
         </DashboardCard>
-
       </div>
 
-      {/* Account */}
-
-      <DashboardCard title="Account Status">
-
-        <div className="grid md:grid-cols-3 gap-6">
-
-          <div className="rounded-xl bg-green-50 p-5 text-center">
-            <h3 className="text-3xl font-bold text-green-700">
-              Active
-            </h3>
-            <p className="text-gray-500 mt-2">
-              Account Status
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-blue-50 p-5 text-center">
-            <h3 className="text-3xl font-bold text-blue-700">
-              Verified
-            </h3>
-            <p className="text-gray-500 mt-2">
-              Seller Verification
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-yellow-50 p-5 text-center">
-            <h3 className="text-3xl font-bold text-yellow-700">
-              ★ 4.9
-            </h3>
-            <p className="text-gray-500 mt-2">
-              Customer Rating
-            </p>
-          </div>
-
-        </div>
-
-      </DashboardCard>
-
+      {/* Profile Edit Modal with Picture & PDF Upload */}
+      <ProfileEditModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

@@ -10,7 +10,7 @@ interface ProductFormProps {
   initialData?: ProductFormData;
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData }) => {
+export function ProductForm({ onSubmit, initialData }: ProductFormProps) {
   const [productData, setProductData] = useState<ProductFormData>(
     initialData ?? {
       name: "",
@@ -73,4 +73,5 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, initialData 
       <Button type="submit">Submit</Button>
     </form>
   );
-};
+}
+

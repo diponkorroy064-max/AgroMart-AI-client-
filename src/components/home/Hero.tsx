@@ -1,271 +1,103 @@
-'use client'
 import Image from "next/image";
-import { ReactNode } from "react";
-import { Briefcase, MapPin, Search, Star, Users, Zap, Package, Tractor, Wind,} from "lucide-react";
+import Link from "next/link";
+import { Sparkles, ArrowRight, Sprout, Star, BadgeCheck, Bot} from "lucide-react";
+import { trendingSearches } from "@/data/home-data";
 
-interface Stat {
-  icon: ReactNode;
-  value: string;
-  label: string;
-}
-
-interface FloatingCard {
-  icon: ReactNode;
-  title: string;
-  value: string;
-  animation: string;
-}
-
-
-
-const stats: Stat[] = [
-  {
-    icon: <Package size={20} className="text-gray-600" />,
-    value: "10,000+",
-    label: "Products",
-  },
-  {
-    icon: <Users size={20} className="text-gray-600" />,
-    value: "2,500+",
-    label: "Sellers",
-  },
-  {
-    icon: <Tractor size={20} className="text-gray-600" />,
-    value: "15,000+",
-    label: "Farmers",
-  },
-];
-
-const floatingCards: FloatingCard[] = [
-  {
-    icon: <Users size={24} className="text-green-600" />,
-    title: "Verified Sellers",
-    value: "2,500+",
-    animation: "animate-float-1",
-  },
-  {
-    icon: <Star size={24} className="text-yellow-500" />,
-    title: "Customer Rating",
-    value: "4.9/5",
-    animation: "animate-float-2",
-  },
-  {
-    icon: <Briefcase size={24} className="text-blue-500" />,
-    title: "Fast Delivery",
-    value: "64 Districts",
-    animation: "animate-float-3",
-  },
-  {
-    icon: <Zap size={24} className="text-purple-500" />,
-    title: "AI Recommendations",
-    value: "24/7 Smart Assistance",
-    animation: "animate-float-4",
-  },
-];
-
-const bottomStats: Stat[] = [
-  {
-    icon: <Package size={32} className="text-green-600" />,
-    value: "10,000+",
-    label: "Products",
-  },
-  {
-    icon: <Users size={32} className="text-green-600" />,
-    value: "2,500+",
-    label: "Verified Sellers",
-  },
-  {
-    icon: <Tractor size={32} className="text-green-600" />,
-    value: "15,000+",
-    label: "Farmers",
-  },
-  {
-    icon: <MapPin size={32} className="text-green-600" />,
-    value: "64",
-    label: "Districts Covered",
-  },
-];
-
-
-
-
-const Hero = () => {
+export default function Hero() {
   return (
-    <section className="container mx-auto relative overflow-hidden bg-white">
-      <div className="absolute top-0 left-0 w-full h-full">
-        <div className="absolute top-[-20%] left-[-20%] w-[40%] h-[40%] bg-green-200/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[40%] h-[40%] bg-yellow-200/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-green-100/20 rounded-full blur-3xl" />
-      </div>
-      <div className="relative z-10 px-4 py-10 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:py-15">
-        <div className="grid items-center grid-cols-1 gap-12 lg:grid-cols-2">
-          <div className="max-w-xl text-center lg:text-left">
-            <div className="inline-flex items-center px-4 py-1 mb-4 text-sm font-semibold text-green-800 bg-green-100 rounded-full">
-              <Wind size={16} className="mr-2" />
-              AI Powered Agricultural Marketplace
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-4xl md:text-5xl">
-              Everything Farmers Need for{" "}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-green-500 to-green-700">
-                Successful Crop Cultivation
-              </span>
-            </h1>
-            <p className="mt-6 text-sm text-gray-600">
-              AgroMart AI is an intelligent agricultural marketplace where
-              trusted sellers provide quality seeds, fertilizers, pesticides,
-              farming tools, irrigation equipment, machinery, seedlings, and
-              other agricultural essentials. Farmers can compare products,
-              purchase securely, and grow healthier, more productive crops.
-            </p>
-            <div className="mt-8 space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-              <button className="w-full px-6 py-3 text-base font-medium text-white transition-transform duration-300 transform bg-green-600 rounded-lg shadow-lg sm:w-auto hover:bg-green-700 hover:scale-105">
-                Explore Products
-              </button>
-              <button className="w-full px-6 py-3 text-base font-medium text-green-700 transition-transform duration-300 transform bg-green-100 rounded-lg shadow-lg sm:w-auto hover:bg-green-200 hover:scale-105">
-                Become a Seller
-              </button>
-            </div>
-
-            <div className="relative mt-8">
-              <input
-                type="text"
-                placeholder="Search seeds, fertilizers, farming tools..."
-                className="w-full px-5 py-4 text-lg text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              />
-              <button className="absolute inset-y-0 right-0 flex items-center px-4 text-white bg-green-600 rounded-r-lg hover:bg-green-700">
-                <Search size={24} />
-              </button>
-            </div>
-
-            {/* <div className="flex items-center justify-center mt-6 space-x-6 lg:justify-start">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex items-center">
-                  {stat.icon}
-                  <div className="ml-2">
-                    <p className="text-lg font-bold text-gray-900">
-                      {stat.value}
-                    </p>
-                    <p className="text-sm text-gray-600">{stat.label}</p>
-                  </div>
-                </div>
-              ))}
-            </div> */}
+    <section className="relative overflow-hidden bg-white border-b border-gray-100 py-10 sm:py-14 lg:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid items-center grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-12">
+        {/* Left Content Column */}
+        <div className="text-center lg:text-left lg:col-span-6">
+          {/* Top Interactive Badge */}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[11px] sm:text-xs font-semibold mb-3 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>বাংলাদেশের নির্ভরযোগ্য এআই স্মার্ট কৃষি প্ল্যাটফর্ম</span>
           </div>
 
-          <div className="relative flex items-center justify-center">
+          {/* Headline */}
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-gray-950 leading-tight mb-3">
+            আধুনিক চাষাবাদ ও উন্নত ফলনে —
+            <span className="block mt-1 text-transparent bg-clip-text bg-linear-to-r from-emerald-600 via-green-600 to-teal-600">
+              কৃষকের আস্থার স্মার্ট মার্কেটপ্লেস
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-5 max-w-xl mx-auto lg:mx-0">
+            সরাসরি বিশ্বস্ত কৃষক ও সরবরাহকারীদের কাছ থেকে খাঁটি ফসল, প্রত্যয়িত বীজ, সার ও আধুনিক কৃষি সরঞ্জাম কিনুন এবং খামারের সর্বোচ্চ লাভ নিশ্চিত করুন।
+          </p>
+
+          {/* Primary Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 mb-5 max-w-md mx-auto lg:mx-0">
+            <Link href="/products" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold text-xs sm:text-sm shadow-xs transition active:scale-95 cursor-pointer">
+                কেনাকাটা শুরু করুন
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </Link>
+
+            <Link href="/register" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-gray-50 text-gray-800 font-semibold text-xs sm:text-sm border border-gray-200 transition active:scale-95 cursor-pointer">
+                <Sprout className="w-3.5 h-3.5 text-green-600" />
+                বিক্রেতা হিসেবে যুক্ত হন
+              </button>
+            </Link>
+          </div>
+
+          {/* Trending Quick Search Chips */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-1.5 text-[11px] text-gray-500 max-w-lg mx-auto lg:mx-0">
+            <span className="font-semibold text-gray-600 text-[11px]">জনপ্রিয়:</span>
+            {trendingSearches.map((item) => (
+              <Link
+                key={item.label}
+                href={`/products?search=${encodeURIComponent(item.query)}`}
+                className="px-2.5 py-0.5 rounded-md bg-gray-100 hover:bg-green-100 hover:text-green-800 text-gray-600 transition text-[11px]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Visual Showcase */}
+        <div className="relative lg:col-span-6 flex items-center justify-center w-full max-w-md sm:max-w-lg lg:max-w-none mx-auto">
+          {/* Visual Frame */}
+          <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-emerald-100/90">
             <Image
               src="/agromartai.png"
-              alt="Agricultural marketplace"
-              width={600}
-              height={600}
-              className="object-cover rounded-3xl shadow-2xl"
+              alt="স্মার্ট কৃষি ফসল ও খামার"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+              className="object-cover"
             />
-            {floatingCards.map((card, index) => (
-              <div
-                key={index}
-                className={`absolute p-4 bg-white/50 backdrop-blur-lg rounded-xl shadow-lg border border-gray-200/50 ${card.animation}`}
-              >
-                <div className="flex items-center">
-                  {card.icon}
-                  <div className="ml-3">
-                    <p className="text-sm font-semibold text-gray-800">
-                      {card.title}
-                    </p>
-                    <p className="text-lg font-bold text-gray-900">
-                      {card.value}
-                    </p>
-                  </div>
-                </div>
+
+            {/* Bottom Badge */}
+            <div className="absolute bottom-3 left-3 right-3 bg-gray-950/75 backdrop-blur-xs rounded-xl p-2.5 sm:p-3 text-white flex items-center justify-between border border-white/10 shadow-sm">
+              <div>
+                <p className="text-[10px] sm:text-xs font-semibold text-green-300">স্মার্ট এগ্রিকালচার</p>
+                <p className="text-xs sm:text-sm font-bold leading-tight">গুণগত মানসম্পন্ন কৃষি পণ্য</p>
               </div>
-            ))}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 bg-green-600 rounded-full text-[10px] sm:text-xs font-bold text-white shadow-2xs">
+                <Bot className="w-3.5 h-3.5" />
+                <span>এআই</span>
+              </div>
+            </div>
           </div>
 
-        </div>
-      </div>
+          {/* Metric Badges */}
+          <div className="absolute -top-3 -right-2 sm:-right-3 bg-white px-3 py-1.5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-1.5">
+            <Star className="w-4 h-4 text-amber-500 fill-amber-400 shrink-0" />
+            <span className="text-xs font-bold text-gray-900">৪.৯ রেটিং</span>
+          </div>
 
-      <div className="py-8 bg-white sm:py-12">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {bottomStats.map((stat) => (
-              <div
-                key={stat.label}
-                className="p-6 text-center transition-transform duration-300 transform bg-gray-100 rounded-lg shadow-md hover:scale-105 hover:-translate-y-2"
-              >
-                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white rounded-full">
-                  {stat.icon}
-                </div>
-                <p className="mt-4 text-3xl font-extrabold text-gray-900">
-                  {stat.value}
-                </p>
-                <p className="mt-1 text-lg font-medium text-gray-600">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
+          <div className="absolute -bottom-3 -left-2 sm:-left-3 bg-white px-3 py-1.5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-1.5">
+            <BadgeCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="text-xs font-bold text-gray-900">১০০% খাঁটি পণ্য</span>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes float-1 {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          50% {
-            transform: translate(10px, -10px) rotate(3deg);
-          }
-        }
-        @keyframes float-2 {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          50% {
-            transform: translate(-10px, 10px) rotate(-3deg);
-          }
-        }
-        @keyframes float-3 {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          50% {
-            transform: translate(10px, 10px) rotate(-3deg);
-          }
-        }
-        @keyframes float-4 {
-          0%,
-          100% {
-            transform: translate(0, 0) rotate(0deg);
-          }
-          50% {
-            transform: translate(-10px, -10px) rotate(3deg);
-          }
-        }
-        .animate-float-1 {
-          animation: float-1 8s ease-in-out infinite;
-          top: 10%;
-          left: -10%;
-        }
-        .animate-float-2 {
-          animation: float-2 8s ease-in-out infinite;
-          top: 30%;
-          right: -15%;
-        }
-        .animate-float-3 {
-          animation: float-3 8s ease-in-out infinite;
-          bottom: 30%;
-          left: -15%;
-        }
-        .animate-float-4 {
-          animation: float-4 8s ease-in-out infinite;
-          bottom: 10%;
-          right: -10%;
-        }
-      `}</style>
     </section>
   );
-};
-
-export default Hero;
+}

@@ -12,7 +12,7 @@ interface EmptyStateProps {
 }
 
 
-const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, action }) => {
+export default function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="text-center py-12">
       <div className="flex justify-center mb-4">{icon}</div>
@@ -25,6 +25,5 @@ const EmptyState: React.FC<EmptyStateProps> = ({ icon, title, description, actio
       )}
     </div>
   );
-};
+}
 
-export default EmptyState;

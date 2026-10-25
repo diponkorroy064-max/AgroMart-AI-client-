@@ -1,87 +1,74 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { Sparkles, ArrowRight } from "lucide-react";
+import { Products } from "@/data/home-data";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { getProducts } from '@/lib/api/product';
-import { ProductList } from '@/components/ui/ProductList';
-import { IProduct } from '@/types/Product';
-import { Button } from '@/components/ui/Button';
 
-// Placeholder for a Skeleton Loading Card component if not already defined
-const SkeletonCard: React.FC = () => (
-  <div className="bg-gray-200 rounded-xl shadow-lg p-4 animate-pulse h-64">
-    <div className="h-3/5 bg-gray-300 rounded-lg mb-2"></div>
-    <div className="h-4 bg-gray-300 rounded-lg mb-2"></div>
-    <div className="h-4 bg-gray-300 rounded-lg w-3/4"></div>
-  </div>
-);
+export default async function FeaturedProducts() {
+  // const products = await fetchServerFeaturedProducts();
+  const displayProducts = Products.slice(0, 6);
 
-const FeaturedProducts: React.FC = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchProductsData = async () => {
-      try {
-        setLoading(true);
-        const data = await getProducts();
-        setProducts(data);
-        // console.log('data', data);
-      } catch (err) {
-        console.error("Failed to fetch products:", err);
-        setError("Failed to load products. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProductsData();
-  }, []);
-
-  
   return (
-    <section className="py-16 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-green-800">Featured Products</h2>
-          <p className="mt-3 text-lg text-gray-600">Discover fresh agricultural products from trusted sellers.</p>
+    <section className="py-10 sm:py-14 bg-white border-b border-gray-100">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-4xl mx-auto mb-8">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-2 border border-emerald-100">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+            <span>কৃষক ও খামারিদের পছন্দের পণ্য</span>
+          </div>
+
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight">
+            জনপ্রিয় কৃষি পণ্য ও উপকরণ
+          </h2>
+
+          <p className="mt-2 text-xs sm:text-sm md:text-base text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            সেরা মানের সার, বীজ, কীটনাশক ও আধুনিক খামার যন্ত্রপাতি
+          </p>
         </div>
 
-        {loading && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {Array.from({ length: 8 }).map((_, index) => (
-              <SkeletonCard key={index} />
-            ))}
-          </div>
-        )}
+        {/* Compact Product Cards: ONLY Picture, Name, and Price */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          {displayProducts.map((product) => (
+            <Link
+              key={product._id}
+              href={`/products/${product._id}`}
+              className="group flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xs hover:border-emerald-300 hover:shadow-xs transition"
+            >
+              {/* Product Picture */}
+              <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
+                <Image
+                  src={product.image || "/placeholder.png"}
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
 
-        {error && (
-          <div className="text-center text-red-600 text-lg py-8">
-            <p>{error}</p>
-          </div>
-        )}
+              {/* Product Name & Price ONLY */}
+              <div className="p-2.5 sm:p-3 flex flex-col justify-between grow">
+                <h3 className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-emerald-700 transition line-clamp-2 leading-snug mb-2">
+                  {product.name}
+                </h3>
 
-        {!loading && !error && products.length === 0 && (
-          <div className="text-center text-gray-600 text-lg py-8">
-            <p>No featured products available at the moment. Please check back later!</p>
-          </div>
-        )}
+                <p className="text-sm font-bold text-emerald-700">
+                  ৳ {product.price}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
 
-        {!loading && !error && products.length > 0 && (
-          <>
-            <ProductList products={products.slice(0, 6)} />
-            <div className="text-center mt-12">
-              <Link href="/products" passHref>
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:-translate-y-1">
-                  View All Products
-                </Button>
-              </Link>
-            </div>
-          </>
-        )}
+        <div className="text-center mt-8">
+          <Link
+            href="/products"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs sm:text-sm transition shadow-sm cursor-pointer"
+          >
+            সকল পণ্য দেখুন
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </section>
   );
-};
-
-export default FeaturedProducts;
+}

@@ -6,7 +6,7 @@ interface StatCardProps {
   value: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ icon, label, value }) => {
+export default function StatCard({ icon, label, value }: StatCardProps) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 flex items-center space-x-4 hover:bg-green-50 dark:hover:bg-green-900 transition-colors duration-200">
       <div className="bg-green-100 dark:bg-green-700 p-3 rounded-full">{icon}</div>
@@ -16,6 +16,5 @@ const StatCard: React.FC<StatCardProps> = ({ icon, label, value }) => {
       </div>
     </div>
   );
-};
+}
 
-export default StatCard;

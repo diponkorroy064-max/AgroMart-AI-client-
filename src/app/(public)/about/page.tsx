@@ -1,555 +1,332 @@
-import { Button } from '@/components/ui/Button';
-import { Activity, Award, CheckCircle, CircleDollarSign, Clock, HeartHandshake, Leaf, Lightbulb, Package, Palette, ShieldCheck, Star, Tractor, TrendingUp, Users} from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-// import Button from '@/components/ui/Button';
+import type { Metadata } from "next";
+import Link from "next/link";
+import { CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  aboutHeroData,
+  aboutPillarsData,
+  aboutCategoriesData,
+  aboutAiWorkflowData,
+  aboutValuesData,
+  aboutStatisticsData,
+  aboutCtaData,
+} from "@/data/about-data";
 
-
-const coreValues = [
-  {
-    icon: <HeartHandshake className="h-12 w-12 text-emerald-500" />,
-    title: 'Trust',
+export const metadata: Metadata = {
+  title: "আমাদের সম্পর্কে | AgroMart AI",
+  description:
+    "AgroMart AI হলো কৃষিকাজের রাসায়নিক ও জৈব সার, আধুনিক মেশিনারিজ, কীটনাশক এবং হাইব্রিড বীজের স্মার্ট মার্কেটপ্লেস। এআই অ্যাসিস্ট্যান্টের মাধ্যমে সঠিক কৃষিপণ্য নির্বাচন করুন।",
+  openGraph: {
+    title: "আমাদের সম্পর্কে | AgroMart AI - স্মার্ট কৃষি মার্কেটপ্লেস",
     description:
-      'We build relationships based on trust and reliability with our farmers, sellers, and customers.',
+      "কৃষক, শীর্ষ কৃষি কোম্পানি ও এআই প্রযুক্তির সমন্বয়ে আধুনিক ও লাভজনক কৃষি সমাধান।",
+    type: "website",
   },
-  {
-    icon: <Award className="h-12 w-12 text-emerald-500" />,
-    title: 'Quality',
-    description:
-      'We are committed to providing the highest quality agricultural products and services.',
-  },
-  {
-    icon: <Leaf className="h-12 w-12 text-emerald-500" />,
-    title: 'Sustainability',
-    description:
-      'We promote sustainable farming practices to protect our planet for future generations.',
-  },
-  {
-    icon: <Lightbulb className="h-12 w-12 text-emerald-500" />,
-    title: 'Innovation',
-    description:
-      'We embrace technology and innovation to revolutionize the agriculture industry.',
-  },
-  {
-    icon: <ShieldCheck className="h-12 w-12 text-emerald-500" />,
-    title: 'Transparency',
-    description: 'We believe in open and honest communication with all our stakeholders.',
-  },
-  {
-    icon: <Users className="h-12 w-12 text-emerald-500" />,
-    title: 'Community',
-    description:
-      'We foster a strong community of farmers, sellers, and buyers working together.',
-  },
-];
+};
 
-const platformFeatures = [
-  {
-    icon: <Users className="h-10 w-10 text-emerald-500" />,
-    title: 'Verified Farmers',
-    description: 'Directly from trusted and verified farmers to your table.',
-  },
-  {
-    icon: <CircleDollarSign className="h-10 w-10 text-emerald-500" />,
-    title: 'Secure Payments',
-    description: 'Safe and secure payment gateway for all your transactions.',
-  },
-  {
-    icon: <Clock className="h-10 w-10 text-emerald-500" />,
-    title: 'Fast Delivery',
-    description: 'Get your fresh products delivered to your doorstep quickly.',
-  },
-  {
-    icon: <Tractor className="h-10 w-10 text-emerald-500" />,
-    title: 'AI Agriculture Support',
-    description: 'Get expert advice and support powered by AI technology.',
-  },
-  {
-    icon: <Package className="h-10 w-10 text-emerald-500" />,
-    title: 'Real-time Inventory',
-    description: 'Track product availability and manage your inventory in real-time.',
-  },
-  {
-    icon: <TrendingUp className="h-10 w-10 text-emerald-500" />,
-    title: 'Order Tracking',
-    description: 'Monitor your orders from the farm to your doorstep.',
-  },
-  {
-    icon: <Star className="h-10 w-10 text-emerald-500" />,
-    title: 'Product Reviews',
-    description: 'Read and write reviews to help the community make informed decisions.',
-  },
-  {
-    icon: <Palette className="h-10 w-10 text-emerald-500" />,
-    title: 'Modern Dashboard',
-    description: 'An intuitive and powerful dashboard to manage your activities.',
-  },
-];
+// Reusable Section Header Component (prevents repeated markup)
+interface SectionHeaderProps {
+  badge?: string;
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+}
 
-const teamMembers = [
-  {
-    avatar: '/user.svg',
-    name: 'Ahmed Khan',
-    role: 'Founder & CEO',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    avatar: '/user.svg',
-    name: 'Fatima Ali',
-    role: 'Full Stack Developer',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    avatar: '/user.svg',
-    name: 'Zainab Begum',
-    role: 'UI/UX Designer',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    avatar: '/user.svg',
-    name: 'Bilal Hassan',
-    role: 'Agriculture Expert',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-];
-
-const testimonials = [
-  {
-    image: '/user.svg',
-    name: 'Aisha Rahman',
-    rating: 5,
-    review: 'AgroMart has transformed the way I sell my produce. The platform is easy to use, and I get fair prices for my hard work.',
-  },
-  {
-    image: '/user.svg',
-    name: 'Ibrahim Malik',
-    rating: 4,
-    review:
-      "As a buyer, I'm impressed with the quality and freshness of the products on AgroMart. The delivery is always on time.",
-  },
-  {
-    image: '/user.svg',
-    name: 'Samina Akter',
-    rating: 5,
-    review:
-      'The AI agriculture support feature is a game-changer. I have learned so much about sustainable farming practices.',
-  },
-];
-
-const impactTimeline = [
-  {
-    year: '2021',
-    title: 'Farmer Registration',
-    description: 'Onboarded our first 100 farmers and started our journey.',
-  },
-  {
-    year: '2022',
-    title: 'Marketplace Launch',
-    description: 'Launched the AgroMart marketplace with over 500 products.',
-  },
-  {
-    year: '2023',
-    title: '1000 Products',
-    description: 'Reached a milestone of 1000 unique products available on the platform.',
-  },
-  {
-    year: '2024',
-    title: 'Nationwide Expansion',
-    description: 'Expanded our services to cover all major districts in the country.',
-  },
-  {
-    year: '2025',
-    title: 'AI Agriculture Assistant',
-    description: 'Introduced our AI-powered assistant to help farmers with smart farming.',
-  },
-];
-
-
-const AboutPage = () => {
+function SectionHeader({
+  badge,
+  title,
+  subtitle,
+  centered = true,
+}: SectionHeaderProps) {
   return (
-    <div className="bg-white dark:bg-gray-900 container mx-auto">
+    <div
+      className={`max-w-4xl sm:max-w-5xl ${
+        centered ? "mx-auto text-center" : "text-left"
+      }`}
+    >
+      {badge && (
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-3 border border-emerald-200/60 dark:border-emerald-800/60">
+          {badge}
+        </span>
+      )}
+      <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="mt-2.5 text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl sm:max-w-4xl mx-auto">
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+}
+
+export default function AboutPage() {
+  return (
+    <div className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen">
       <main className="overflow-hidden">
-        <div className="relative isolate">
-          <div
-            className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-            aria-hidden="true">
-            <div
-              className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#80ff80] to-[#008000] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
-              style={{
-                clipPath:
-                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-              }}/>
-          </div>
+        {/* 1. Hero Section */}
+        <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-14 sm:pt-16 sm:pb-20 text-center">
+          <div className="w-full max-w-5xl sm:max-w-6xl mx-auto">
+            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-semibold mb-4 border border-emerald-200/80 dark:border-emerald-800/80 shadow-2xs">
+              🌾 {aboutHeroData.badge}
+            </span>
 
-          {/* Hero Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-                Growing Agriculture Through Technology
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                AgroMart is a modern platform that connects farmers, sellers, and buyers to
-                create a sustainable and profitable agricultural ecosystem.
-              </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
-                <Link href="/products">
-                  <Button>
-                    Explore Products
-                  </Button>
-                </Link>
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
+              {aboutHeroData.title}
+            </h1>
 
-                <Link href="/register">
-                  <Button variant='outline'>
-                    Become a Seller <span aria-hidden="true">→</span>
-                  </Button>
-                </Link>
-              </div>
+            <p className="mt-3.5 text-xs sm:text-sm md:text-base leading-relaxed text-gray-600 dark:text-gray-300 max-w-4xl sm:max-w-5xl mx-auto font-normal">
+              {aboutHeroData.subtitle}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href={aboutHeroData.primaryCta.href}
+                className="inline-flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white px-7 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm hover:shadow-md transition active:scale-95 cursor-pointer"
+              >
+                {aboutHeroData.primaryCta.label}
+              </Link>
+              <Link
+                href={aboutHeroData.secondaryCta.href}
+                className="inline-flex items-center justify-center border-2 border-emerald-700/80 dark:border-emerald-600 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 px-7 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm transition active:scale-95 cursor-pointer"
+              >
+                {aboutHeroData.secondaryCta.label}
+              </Link>
             </div>
           </div>
+        </section>
 
-          {/* Our Story Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                  Our Story
-                </h2>
-                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  AgroMart was born from a desire to solve the challenges faced by farmers in
-                  accessing markets and getting fair prices for their produce. We saw an
-                  opportunity to use technology to bridge the gap between farmers and
-                  consumers, creating a transparent and efficient marketplace.
-                </p>
-                <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                  Our platform empowers farmers by providing them with the tools and resources
-                  they need to thrive in the digital age. We connect them with a wide network
-                  of buyers, ensuring they get the best value for their hard work.
-                </p>
-              </div>
-              <div className="rounded-lg overflow-hidden">
-                <Image
-                  src="https://images.pexels.com/photos/4207892/pexels-photo-4207892.jpeg"
-                  alt="Our Story"
-                  width={600}
-                  height={400}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </div>
-          </div>
+        {/* 2. Core Pillars: Farmers, Sellers & AI Assistant */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 border-t border-gray-100 dark:border-gray-900">
+          <SectionHeader
+            badge="অ্যাগ্রোমার্ট ইকোসিস্টেম"
+            title="কৃষক, সেলার ও এআই-এর সমন্বিত মার্কেটপ্লেস"
+            subtitle="AgroMart AI কেবল একটি ই-কমার্স নয়; এটি কৃষক ও কৃষি কোম্পানির সরাসরি সংযোগ এবং নির্ভুল এআই নির্দেশনার এক আধুনিক প্ল্যাটফর্ম।"
+          />
 
-          {/* Mission & Vision Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-              <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-md">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Our Mission</h3>
-                <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                  To empower farmers through digital technology, ensuring fair pricing, an easy
-                  marketplace, and promoting sustainable agriculture for a better future.
-                </p>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-md">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Our Vision</h3>
-                <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                  To build the largest agricultural marketplace, creating a smart farming
-                  ecosystem that drives digital transformation and a brighter future for the
-                  agriculture sector.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Core Values Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Our Core Values
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                The principles that guide our work and define our culture.
-              </p>
-            </div>
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {coreValues.map((value) => (
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {aboutPillarsData.map((pillar) => {
+              const Icon = pillar.icon;
+              return (
                 <div
-                  key={value.title}
-                  className="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg shadow-md text-center">
-                  <div className="flex justify-center mb-4">{value.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {value.title}
-                  </h3>
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">{value.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Platform Features Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Platform Features
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                Everything you need to succeed in the agricultural marketplace.
-              </p>
-            </div>
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {platformFeatures.map((feature) => (
-                <div
-                  key={feature.title}
-                  className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                  <div className="flex items-center mb-4">
-                    {feature.icon}
-                    <h3 className="ml-4 text-lg font-bold text-gray-900 dark:text-white">
-                      {feature.title}
-                    </h3>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Why Choose AgroMart Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                  Why Choose AgroMart
-                </h2>
-                <ul className="mt-8 space-y-4">
-                  {[
-                    'Fresh Products',
-                    'Trusted Sellers',
-                    'Affordable Prices',
-                    'Secure Transactions',
-                    'Fast Delivery',
-                    '24/7 Support',
-                  ].map((benefit) => (
-                    <li key={benefit} className="flex items-center">
-                      <CheckCircle className="h-6 w-6 text-emerald-500" />
-                      <span className="ml-3 text-lg text-gray-600 dark:text-gray-300">
-                        {benefit}
+                  key={pillar.id}
+                  className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/90 dark:border-gray-800 p-7 sm:p-8 flex flex-col justify-between hover:border-emerald-300 dark:hover:border-emerald-700/80 hover:shadow-lg transition-all duration-200"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-4 mb-5">
+                      <div className="w-13 h-13 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center border border-emerald-100 dark:border-emerald-900/60">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                        {pillar.badge}
                       </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-lg overflow-hidden">
-                <Image
-                  src="https://images.pexels.com/photos/2252584/pexels-photo-2252584.jpeg"
-                  alt="Why Choose AgroMart"
-                  width={600}
-                  height={400}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-            </div>
-          </div>
+                    </div>
 
-          {/* Statistics Section */}
-          <div className="bg-emerald-600 text-white py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 text-center">
-                <div>
-                  <h3 className="text-4xl font-bold">500+</h3>
-                  <p className="mt-2 text-lg">Farmers</p>
-                </div>
-                <div>
-                  <h3 className="text-4xl font-bold">10,000+</h3>
-                  <p className="mt-2 text-lg">Customers</p>
-                </div>
-                <div>
-                  <h3 className="text-4xl font-bold">5,000+</h3>
-                  <p className="mt-2 text-lg">Products</p>
-                </div>
-                <div>
-                  <h3 className="text-4xl font-bold">25+</h3>
-                  <p className="mt-2 text-lg">Districts</p>
-                </div>
-                <div>
-                  <h3 className="text-4xl font-bold">98%</h3>
-                  <p className="mt-2 text-lg">Satisfaction</p>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-snug">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm font-medium text-emerald-700 dark:text-emerald-400 mt-1">
+                      {pillar.subtitle}
+                    </p>
 
-          {/* Meet Our Team Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Meet Our Team
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                The passionate people behind AgroMart.
-              </p>
-            </div>
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member) => (
-                <div
-                  key={member.name}
-                  className="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
-                  <Image
-                    src={member.avatar}
-                    alt={member.name}
-                    width={96}
-                    height={96}
-                    className="mx-auto rounded-full"/>
-                  <h3 className="mt-4 text-xl font-bold text-gray-900 dark:text-white">
-                    {member.name}
-                  </h3>
-                  <p className="text-emerald-500">{member.role}</p>
-                  <div className="mt-4 flex justify-center gap-4">
-                    <a href={member.social.twitter}>
-                      <Activity className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-                    </a>
-                    <a href={member.social.linkedin}>
-                      <Activity className="h-6 w-6 text-gray-600 dark:text-gray-300" />
-                    </a>
+                    <p className="mt-3.5 text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      {pillar.description}
+                    </p>
+
+                    <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800/80 space-y-3">
+                      {pillar.features.map((feat, idx) => (
+                        <div key={idx} className="flex items-start gap-2.5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-snug">
+                            {feat}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Testimonials Section */}
-          <div className="bg-gray-100 dark:bg-gray-800 py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                  What Our Community Says
-                </h2>
-                <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                  Real stories from real people.
-                </p>
-              </div>
-              <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {testimonials.map((testimonial) => (
+                  {pillar.ctaHref && pillar.ctaLabel && (
+                    <div className="mt-8 pt-4">
+                      <Link
+                        href={pillar.ctaHref}
+                        className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 group"
+                      >
+                        {pillar.ctaLabel}
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 3. Comprehensive Product Offerings & Machinery */}
+        <section className="bg-gray-50/80 dark:bg-gray-900/50 py-16 sm:py-20 border-y border-gray-100 dark:border-gray-900">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              badge="পণ্য সম্ভার"
+              title="কৃষিকাজের সব ধরনের সরঞ্জাম এক ঠিকানায়"
+              subtitle="রাসায়নিক সার, জৈব সার, ভারী মেশিনারিজ, কীটনাশক ও হাইব্রিড বীজ—উচ্চ ফলনশীল চাষাবাদের সমস্ত উপাদান।"
+            />
+
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {aboutCategoriesData.map((cat) => {
+                const Icon = cat.icon;
+                return (
                   <div
-                    key={testimonial.name}
-                    className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
-                    <div className="flex items-center mb-4">
-                      <Image
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        width={48}
-                        height={48}
-                        className="rounded-full" />
-                      <div className="ml-4">
-                        <h3 className="font-bold text-gray-900 dark:text-white">
-                          {testimonial.name}
-                        </h3>
-                        <div className="flex">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="h-5 w-5 text-yellow-500" />
-                          ))}
+                    key={cat.id}
+                    className="bg-white dark:bg-gray-900 p-6 sm:p-7 rounded-2xl border border-gray-200/80 dark:border-gray-800 flex flex-col justify-between hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-200 shadow-2xs"
+                  >
+                    <div>
+                      <div className="flex items-center gap-3.5 mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-900/60">
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white leading-snug">
+                            {cat.title}
+                          </h3>
+                          <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
+                            {cat.badge}
+                          </span>
                         </div>
                       </div>
+
+                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {cat.description}
+                      </p>
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">{testimonial.review}</p>
+
+                    <div className="mt-5 pt-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
+                      <Link
+                        href={`/products?category=${cat.categorySlug}`}
+                        className="text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 inline-flex items-center gap-1 group"
+                      >
+                        পণ্যসমূহ দেখুন
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </div>
                   </div>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
+        </section>
 
-          {/* Our Impact Section */}
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Our Impact
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                A timeline of our journey and milestones.
-              </p>
-            </div>
-            <div className="mt-16">
-              {impactTimeline.map((item, index) => (
-                <div key={item.title} className="flex items-center w-full">
-                  <div className="w-1/2 text-right pr-8">
-                    {index % 2 === 0 && (
-                      <div>
-                        <h3 className="font-bold text-gray-900 dark:text-white">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {item.description}
-                        </p>
-                      </div>
-                    )}
+        {/* 4. AI Assistant Workflow: How It Works */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <SectionHeader
+            badge="স্মার্ট প্রযুক্তি"
+            title="কীভাবে কাজ করে AgroMart AI অ্যাসিস্ট্যান্ট?"
+            subtitle="কৃষক যাতে সঠিক জমিতে সঠিক পণ্য প্রয়োগ করে সর্বোচ্চ ফসল ঘরে তুলতে পারেন, সেজন্য ৩টি সহজ পদক্ষেপে কাজ করে আমাদের এআই।"
+          />
+
+          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+            {aboutAiWorkflowData.map((item, idx) => (
+              <div
+                key={idx}
+                className="bg-white dark:bg-gray-900 rounded-2xl p-7 border border-gray-200/90 dark:border-gray-800 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-200 flex flex-col justify-between shadow-2xs relative"
+              >
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white font-extrabold text-base flex items-center justify-center mb-5 shadow-xs">
+                    {item.step}
                   </div>
-                  <div className="w-1/12">
-                    <div className="mx-auto w-1 h-16 bg-emerald-500 rounded-full"></div>
-                    <div className="mx-auto w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center text-white">
-                      {item.year}
-                    </div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 leading-snug">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 5. Trust, Authenticity & Commitments */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 border-t border-gray-100 dark:border-gray-900">
+          <SectionHeader
+            badge="আমাদের অঙ্গীকার"
+            title="কৃষক ও সেলারদের প্রতি আমাদের প্রতিশ্রুতি"
+            subtitle="প্রতারণাহীন ও নিরাপদ কৃষি সামগ্রী সরবরাহের মাধ্যমে একটি টেকসই খাদ্য বিপ্লব গড়ে তোলা আমাদের অঙ্গীকার।"
+          />
+
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {aboutValuesData.map((val) => {
+              const Icon = val.icon;
+              return (
+                <div
+                  key={val.id}
+                  className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 text-center hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-200 flex flex-col items-center"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 flex items-center justify-center mb-4 border border-emerald-100 dark:border-emerald-900/60">
+                    <Icon className="w-6 h-6" />
                   </div>
-                  <div className="w-1/2 pl-8">
-                    {index % 2 !== 0 && (
-                      <div>
-                        <h3 className="font-bold text-gray-900 dark:text-white">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-300">
-                          {item.description}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-white mb-2">
+                    {val.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                    {val.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 6. Impact Statistics Strip */}
+        <section className="bg-emerald-900 text-white py-14 sm:py-16 rounded-3xl mx-4 my-10 shadow-md">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-8 text-center">
+              {aboutStatisticsData.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className={
+                    idx === aboutStatisticsData.length - 1
+                      ? "col-span-2 lg:col-span-1"
+                      : ""
+                  }
+                >
+                  <h3 className="text-3xl sm:text-4xl font-black text-amber-300">
+                    {stat.value}
+                  </h3>
+                  <p className="mt-1.5 text-xs sm:text-sm text-emerald-100 font-medium">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
+        </section>
 
-          {/* Call To Action Section */}
-          <div className="bg-linear-to-r from-emerald-500 to-green-500 py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Join the Future of Agriculture
-              </h2>
-              <div className="mt-10 flex items-center justify-center gap-x-6">
-                <Link
-                  href="#"
-                  className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-emerald-600 shadow-sm hover:bg-gray-100"
-                >
-                  Explore Marketplace
-                </Link>
-                <Link
-                  href="#"
-                  className="text-sm font-semibold leading-6 text-white"
-                >
-                  Register Now <span aria-hidden="true">→</span>
-                </Link>
-              </div>
+        {/* 7. Call To Action (CTA) Section */}
+        <section className="bg-linear-to-r from-emerald-900 via-emerald-800 to-green-900 py-16 sm:py-20 text-center text-white rounded-3xl mx-4 mb-16 shadow-lg">
+          <div className="mx-auto max-w-3xl px-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+              {aboutCtaData.title}
+            </h2>
+            <p className="mt-4 text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+              {aboutCtaData.subtitle}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href={aboutCtaData.primaryCta.href}
+                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-emerald-950 hover:bg-emerald-50 font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+              >
+                {aboutCtaData.primaryCta.label}
+              </Link>
+              <Link
+                href={aboutCtaData.secondaryCta.href}
+                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full border-2 border-white text-white hover:bg-white hover:text-emerald-950 font-bold text-sm sm:text-base transition-all active:scale-95 cursor-pointer"
+              >
+                {aboutCtaData.secondaryCta.label}
+              </Link>
             </div>
           </div>
-
-          {/* Footer Banner */}
-          <div className="bg-gray-900 py-8">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-              <p className="text-lg text-white">
-                Together we grow agriculture with technology.
-              </p>
-            </div>
-          </div>
-        </div>
+        </section>
       </main>
     </div>
   );
-};
-
-export default AboutPage;
+}

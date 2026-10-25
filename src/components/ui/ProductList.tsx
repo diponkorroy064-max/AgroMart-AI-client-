@@ -1,118 +1,70 @@
-'use client';
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Card } from './Card';
-import { Button } from './Button';
-import { IProduct } from '@/types/Product';
-import { useCart } from '@/contexts/CartContext';
-import { ArrowRight } from 'lucide-react';
-
+import Image from "next/image";
+import Link from "next/link";
+import { IProduct } from "@/types/Product";
 
 interface ProductListProps {
   products: IProduct[];
-  onEdit?: (product: IProduct) => void;
-  onDelete?: (productId: string) => void;
-  showControls?: boolean;
 }
 
-export const ProductList: React.FC<ProductListProps> = ({
-  products,
-  onEdit,
-  onDelete,
-  showControls = false,
-}) => {
-  const { addToCart } = useCart();
-
+export function ProductList({ products }: ProductListProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-4.5">
       {products.map((product) => (
-        <Card
-          key={product._id}
-          className="overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
+        <Link
+          key={String(product._id)}
+          href={`/products/${product._id}`}
+          className="group block bg-white dark:bg-gray-800/60 rounded-xl sm:rounded-2xl border border-gray-200/80 dark:border-gray-700/80 overflow-hidden hover:border-emerald-300 dark:hover:border-emerald-600/80 hover:shadow-xs transition-all duration-200"
         >
           {/* Product Image */}
-          <div className="relative h-56 w-full">
+          <div className="relative aspect-square w-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
             <Image
               src={product.image || "/placeholder.png"}
               alt={product.name}
               fill
-              className="object-cover"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
+
+            {/* Stock Availability Badges */}
+            <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+              {product.isExpired ? (
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-600/90 text-white backdrop-blur-xs shadow-xs">
+                  মেয়াদ শেষ
+                </span>
+              ) : (product.quantity || 0) <= 0 ? (
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-600/90 text-white backdrop-blur-xs shadow-xs">
+                  স্টক শেষ
+                </span>
+              ) : (product.quantity || 0) <= (product.lowStockThreshold || 5) ? (
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/90 text-white backdrop-blur-xs shadow-xs">
+                  স্বল্প স্টক: {product.quantity} {product.unit || 'টি'}
+                </span>
+              ) : null}
+            </div>
           </div>
 
-          {/* Card Body */}
-          <div className="p-5">
-            <h3 className="text-xl font-bold text-green-700">
+          {/* Product Details: Name, Unit Price & Availability */}
+          <div className="p-3 sm:p-3.5">
+            <h3 className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
               {product.name}
             </h3>
 
-            <p className="text-gray-600 mt-2 line-clamp-2">
-              {product.description}
-            </p>
-
-            <div className="mt-4 space-y-2 text-sm">
-              <p>
-                <span className="font-semibold">Price:</span>{" "}
-                <span className="text-green-600 font-bold">
-                  ৳ {product.price}
+            <div className="mt-1 flex items-baseline justify-between">
+              <p className="text-sm sm:text-base font-extrabold text-emerald-700 dark:text-emerald-400">
+                ৳ {product.price}
+                <span className="text-[11px] font-normal text-gray-400 ml-1">
+                  /{product.unit || 'কেজি'}
                 </span>
               </p>
-
-              <p>
-                <span className="font-semibold">Quantity:</span>{" "}
-                {product.quantity}
-              </p>
-
-              <p>
-                <span className="font-semibold">Category:</span>{" "}
-                {product.category}
-              </p>
-
-              <p>
-                <span className="font-semibold">Seller:</span>{" "}
-                {product.seller?.name ?? "Unknown Seller"}
-              </p>
+              {(product.quantity || 0) > 0 && !product.isExpired && (
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+                  স্টকে আছে
+                </span>
+              )}
             </div>
-
-            {/* Farmer Dashboard Buttons */}
-            {showControls ? (
-              <div className="flex gap-2 mt-6">
-                <Button
-                  className="flex-1"
-                  onClick={() => onEdit?.(product)}
-                >
-                  Edit
-                </Button>
-
-                <Button
-                  variant="destructive"
-                  className="flex-1"
-                  onClick={() => onDelete?.(String(product._id))}
-                >
-                  Delete
-                </Button>
-              </div>
-            ) : (
-              <div className="flex justify-around items-center mt-6">
-                <Link href={`/products/${product._id}`} className="block">
-                  <Button variant="outline" className="w-35">
-                    Details <ArrowRight/>
-                  </Button>
-                </Link>
-
-                <Button
-                  className="w-35 bg-green-600 hover:bg-green-700"
-                  onClick={() => addToCart(product, 1)}
-                >
-                  Add to Cart
-                </Button>
-              </div>
-            )}
           </div>
-        </Card>
+        </Link>
       ))}
     </div>
   );
-};
-
+}

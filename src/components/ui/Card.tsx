@@ -5,10 +5,11 @@ interface ICardProps {
   className?: string;
 }
 
-export const Card: React.FC<ICardProps> = ({ children, className }) => {
+export function Card({ children, className }: ICardProps) {
   return (
     <div className={`bg-white shadow-md rounded-lg p-6 ${className}`}>
       {children}
     </div>
   );
-};
+}
+

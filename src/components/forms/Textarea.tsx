@@ -6,7 +6,7 @@ interface ITextareaProps
   error?: string;
 }
 
-export const Textarea: React.FC<ITextareaProps> = ({ label, error, ...props }) => {
+export function Textarea({ label, error, ...props }: ITextareaProps) {
   return (
     <div className="mb-4">
       {label && <label className="block text-gray-700 mb-2">{label}</label>}
@@ -19,4 +19,5 @@ export const Textarea: React.FC<ITextareaProps> = ({ label, error, ...props }) =
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
-};
+}
+

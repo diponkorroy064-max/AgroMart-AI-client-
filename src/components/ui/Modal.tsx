@@ -6,7 +6,7 @@ interface IModalProps {
   children: React.ReactNode;
 }
 
-const Modal: React.FC<IModalProps> = ({ isOpen, onClose, children }) => {
+export default function Modal({ isOpen, onClose, children }: IModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -19,6 +19,5 @@ const Modal: React.FC<IModalProps> = ({ isOpen, onClose, children }) => {
       </div>
     </div>
   );
-};
+}
 
-export default Modal;

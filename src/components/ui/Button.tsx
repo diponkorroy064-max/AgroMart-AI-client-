@@ -10,12 +10,12 @@ interface ButtonProps
   size?: "default" | "sm" | "lg" | "icon";
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export function Button({
   variant = "default",
   size = "default",
   className = "",
   ...props
-}) => {
+}: ButtonProps) {
   const variants = {
     default:
       "bg-green-600 text-white hover:bg-green-700",
@@ -62,4 +62,5 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     />
   );
-};
+}
+

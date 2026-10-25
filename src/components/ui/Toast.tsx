@@ -5,18 +5,23 @@ interface IToastProps {
   duration?: number;
 }
 
-const Toast: React.FC<IToastProps> = ({ message, duration = 3000 }) => {
-  const [visible, setVisible] = useState(false);
+export default function Toast({ message, duration = 3000 }: IToastProps) {
+  const [visible, setVisible] = useState(Boolean(message));
+  const [prevMessage, setPrevMessage] = useState(message);
+
+  if (prevMessage !== message) {
+    setPrevMessage(message);
+    setVisible(Boolean(message));
+  }
 
   useEffect(() => {
-    if (message) {
-      setVisible(true);
+    if (visible) {
       const timer = setTimeout(() => {
         setVisible(false);
       }, duration);
       return () => clearTimeout(timer);
     }
-  }, [message, duration]);
+  }, [visible, duration]);
 
   if (!visible) return null;
 
@@ -25,6 +30,5 @@ const Toast: React.FC<IToastProps> = ({ message, duration = 3000 }) => {
       {message}
     </div>
   );
-};
+}
 
-export default Toast;

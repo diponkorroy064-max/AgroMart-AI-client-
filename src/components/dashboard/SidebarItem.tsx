@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 
 interface SidebarItemProps {
@@ -7,6 +8,7 @@ interface SidebarItemProps {
   icon: React.ReactNode;
   label: string;
   isActive: boolean;
+  onClick?: () => void;
 }
 
 const SidebarItem = ({
@@ -14,10 +16,12 @@ const SidebarItem = ({
   icon,
   label,
   isActive,
+  onClick,
 }: SidebarItemProps) => {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`
         group
         relative
@@ -25,25 +29,34 @@ const SidebarItem = ({
         items-center
         gap-3
         rounded-xl
-        px-5
-        py-3
+        px-3.5
+        py-2.5
         font-medium
+        text-sm
         transition-all
         duration-200
-
         ${isActive
-          ? 'bg-green-100 text-green-700 shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100 hover:text-green-700'
+          ? 'bg-emerald-50 text-emerald-800 font-semibold shadow-xs dark:bg-emerald-950/60 dark:text-emerald-300'
+          : 'text-gray-600 hover:bg-gray-100/80 hover:text-emerald-700 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-emerald-400'
         }
       `}>
       {isActive && (
-        <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-green-600" />
+        <span className="absolute left-0 top-1.5 bottom-1.5 w-1.5 rounded-r-full bg-emerald-600 dark:bg-emerald-500 shadow-sm" />
       )}
 
-      {icon}
-      <span>{label}</span>
+      <span
+        className={`transition-colors shrink-0 ${
+          isActive
+            ? 'text-emerald-600 dark:text-emerald-400'
+            : 'text-gray-500 group-hover:text-emerald-600 dark:text-gray-400 dark:group-hover:text-emerald-400'
+        }`}
+      >
+        {icon}
+      </span>
+      <span className="truncate">{label}</span>
     </Link>
   );
 };
 
 export default SidebarItem;
+

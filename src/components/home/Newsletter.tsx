@@ -1,117 +1,38 @@
-"use client";
-import React, { useState } from 'react';
-import {Leaf, Bell, BadgePercent, CheckCircle, LucideProps } from 'lucide-react';
-
-interface Benefit {
-  text: string;
-  icon: React.ComponentType<LucideProps>;
-}
-
-const benefits: Benefit[] = [
-  { text: 'Weekly Farming Tips', icon: Leaf },
-  { text: 'Exclusive Discounts', icon: BadgePercent },
-  { text: 'New Product Alerts', icon: Bell },
-];
-
-const Newsletter: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const validateEmail = (email: string) => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setIsSubmitted(false);
-
-    if (!email) {
-      setError('Email is required.');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError('Invalid email format.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setEmail('');
-  };
+import { Leaf } from "lucide-react";
+import { NewsletterForm } from "./NewsletterForm";
+import { newsletterTrustCues } from "@/data/home-data";
 
 
+export default function Newsletter() {
   return (
-    <section className="py-16 bg-linear-to-r from-green-600 to-emerald-700 text-white">
-      <div className="container mx-auto px-6">
-        <div className="bg-white rounded-xl shadow-2xl p-8 md:p-12 text-gray-800">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            {/* Left Side: Content */}
-            <div>
-              <h2 className="text-4xl font-bold text-green-800 mb-4">Stay Updated with AgroMart</h2>
-              <p className="text-lg text-gray-700 mb-8">
-                Subscribe to receive the latest farming tips, market prices, agricultural news, discounts, and exclusive offers.
-              </p>
-              <div className="space-y-4">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center">
-                    <benefit.icon className="text-green-600 mr-3" size={24} />
-                    <p className="text-gray-700 text-lg">{benefit.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+    <section className="py-12 sm:py-16 bg-white border-t border-gray-100">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-3 border border-emerald-100">
+            <Leaf className="w-3.5 h-3.5 text-emerald-600" />
+            অ্যাগ্রোমার্ট আপডেট
+          </span>
 
-            {/* Right Side: Subscription Form */}
-            <div className="bg-green-50 p-8 rounded-lg shadow-inner">
-              <h3 className="text-2xl font-bold text-green-800 mb-6">Join Our Newsletter</h3>
+          <h2 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
+            নিয়মিত কৃষি টিপস ও অফার পেতে যুক্ত থাকুন
+          </h2>
 
-              {isSubmitted ? (
-                <div className="text-center text-green-700 text-xl font-semibold flex flex-col items-center">
-                  <CheckCircle size={48} className="mb-4" />
-                  <p>Thank you for subscribing!</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <label htmlFor="email" className="sr-only">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      placeholder="Enter your email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                      disabled={isSubmitting}
-                      aria-label="Email Address"
-                    />
-                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md
-                               hover:bg-green-700 transition duration-300 ease-in-out transform hover:-translate-y-0.5
-                               disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                  </button>
-                </form>
-              )}
-            </div>
+          <p className="text-xs sm:text-sm text-gray-500 mb-6 max-w-2xl mx-auto leading-relaxed">
+            মৌসুমি চাষের আধুনিক পরামর্শ, খামার সরঞ্জাম ও সার-বীজের বিশেষ মূল্যছাড় সরাসরি আপনার ইনবক্সে।
+          </p>
+
+          <NewsletterForm />
+
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-6 text-xs text-gray-400">
+            {newsletterTrustCues.map((item, idx) => (
+              <span key={idx} className="inline-flex items-center gap-1">
+                <item.icon className="w-3.5 h-3.5 text-emerald-600" />
+                {item.label}
+              </span>
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Newsletter;
+}

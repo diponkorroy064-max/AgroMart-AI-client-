@@ -12,7 +12,7 @@ interface DashboardHeaderProps {
   breadcrumb: BreadcrumbItem[];
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title, breadcrumb }) => {
+export default function DashboardHeader({ title, breadcrumb }: DashboardHeaderProps) {
   return (
     <div className="mb-6">
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{title}</h1>
@@ -32,6 +32,5 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ title, breadcrumb }) 
       </div>
     </div>
   );
-};
+}
 
-export default DashboardHeader;

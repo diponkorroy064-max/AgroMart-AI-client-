@@ -1,255 +1,172 @@
-"use client";
 import Link from "next/link";
-import { Leaf, Mail, Phone, MapPin, Send} from "lucide-react";
+import { Leaf, Mail, Phone, MapPin } from "lucide-react";
 import { FaFacebook } from "react-icons/fa";
 import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { LiaLinkedin } from "react-icons/lia";
 
-
 export default function Footer() {
   return (
-    <footer className="container mx-auto bg-gray-800 text-white">
-
+    <footer className="w-full bg-gray-900 text-white border-t border-gray-800">
       {/* Top */}
-      <div className="container mx-auto px-6 py-14">
-
+      <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-
-          {/* Logo */}
+          {/* Logo & About */}
           <div className="lg:col-span-2">
-
             <div className="flex items-center gap-2 mb-4">
               <Leaf className="h-8 w-8 text-yellow-300" />
-              <h2 className="text-3xl font-bold">
-                AgroMart
-              </h2>
+              <h2 className="text-3xl font-bold tracking-tight">AgroMart AI</h2>
             </div>
 
-            <p className="text-green-100 leading-7">
-              AgroMart is a smart agriculture marketplace that connects
-              farmers, sellers, and customers. Buy fresh products directly
-              from trusted farmers with secure payment and fast delivery.
+            <p className="text-emerald-100/80 leading-7 text-sm max-w-sm">
+              অ্যাগ্রোমার্ট একটি স্মার্ট কৃষি মার্কেটপ্লেস যা কৃষক, বিক্রেতা ও ক্রেতাদের সরাসরি সংযুক্ত করে। ন্যায্যমূল্যে খাঁটি বীজ, সার, কীটনাশক ও আধুনিক খামার সরঞ্জাম কিনুন নিরাপদে।
             </p>
 
             {/* Social */}
-
-            <div className="flex gap-4 mt-6">
-
+            <div className="flex gap-3 mt-6">
               <Link
                 href="#"
-                className="bg-white/10 p-3 rounded-full hover:bg-green-600 transition"
+                aria-label="Facebook"
+                className="bg-white/10 p-2.5 rounded-full hover:bg-emerald-600 transition"
               >
-                <FaFacebook size={20} />
+                <FaFacebook size={18} />
               </Link>
 
               <Link
                 href="#"
-                className="bg-white/10 p-3 rounded-full hover:bg-pink-600 transition"
+                aria-label="Instagram"
+                className="bg-white/10 p-2.5 rounded-full hover:bg-pink-600 transition"
               >
-                <BsInstagram size={20} />
+                <BsInstagram size={18} />
               </Link>
 
               <Link
                 href="#"
-                className="bg-white/10 p-3 rounded-full hover:bg-sky-500 transition"
+                aria-label="Twitter"
+                className="bg-white/10 p-2.5 rounded-full hover:bg-sky-500 transition"
               >
-                <BsTwitter size={20} />
+                <BsTwitter size={18} />
               </Link>
 
               <Link
                 href="#"
-                className="bg-white/10 p-3 rounded-full hover:bg-blue-700 transition"
+                aria-label="LinkedIn"
+                className="bg-white/10 p-2.5 rounded-full hover:bg-blue-700 transition"
               >
-                <LiaLinkedin size={20} />
+                <LiaLinkedin size={18} />
               </Link>
-
             </div>
-
           </div>
 
           {/* Quick Links */}
-
           <div>
-
-            <h3 className="text-xl font-semibold mb-5">
-              Quick Links
+            <h3 className="text-lg font-bold mb-5 text-yellow-300">
+              প্রয়োজনীয় লিঙ্ক
             </h3>
 
-            <ul className="space-y-3 text-green-100">
-
+            <ul className="space-y-2.5 text-sm text-emerald-100/80">
               <li>
-                <Link href="/" className="hover:text-yellow-300">
-                  Home
+                <Link href="/" className="hover:text-yellow-300 transition">
+                  হোম পেজ
                 </Link>
               </li>
-
               <li>
-                <Link href="/products" className="hover:text-yellow-300">
-                  Products
+                <Link href="/products" className="hover:text-yellow-300 transition">
+                  সকল কৃষি পণ্য
                 </Link>
               </li>
-
               <li>
-                <Link href="/about" className="hover:text-yellow-300">
-                  About
+                <Link href="/blog" className="hover:text-yellow-300 transition">
+                  কৃষি ব্লগ ও টিপস
                 </Link>
               </li>
-
               <li>
-                <Link href="/contact" className="hover:text-yellow-300">
-                  Contact
+                <Link href="/about" className="hover:text-yellow-300 transition">
+                  আমাদের সম্পর্কে
                 </Link>
               </li>
-
+              <li>
+                <Link href="/contact" className="hover:text-yellow-300 transition">
+                  যোগাযোগ ও সহায়তা
+                </Link>
+              </li>
             </ul>
-
           </div>
 
           {/* Marketplace */}
-
           <div>
-
-            <h3 className="text-xl font-semibold mb-5">
-              Marketplace
+            <h3 className="text-lg font-bold mb-5 text-yellow-300">
+              মার্কেটপ্লেস
             </h3>
 
-            <ul className="space-y-3 text-green-100">
-
+            <ul className="space-y-2.5 text-sm text-emerald-100/80">
               <li>
-                <Link href="/products" className="hover:text-yellow-300">
-                  Browse Products
+                <Link href="/products" className="hover:text-yellow-300 transition">
+                  পণ্য ব্রাউজ করুন
                 </Link>
               </li>
-
               <li>
-                <Link href="/register" className="hover:text-yellow-300">
-                  Become Seller
+                <Link href="/register" className="hover:text-yellow-300 transition">
+                  বিক্রেতা হিসেবে যোগ দিন
                 </Link>
               </li>
-
               <li>
-                <Link href="/login" className="hover:text-yellow-300">
-                  Login
+                <Link href="/login" className="hover:text-yellow-300 transition">
+                  ব্যবহারকারী লগইন
                 </Link>
               </li>
-
               <li>
-                <Link href="/cart" className="hover:text-yellow-300">
-                  Shopping Cart
+                <Link href="/cart" className="hover:text-yellow-300 transition">
+                  শপিং কার্ট
                 </Link>
               </li>
-
             </ul>
-
           </div>
 
           {/* Contact */}
-
           <div>
-
-            <h3 className="text-xl font-semibold mb-5">
-              Contact
+            <h3 className="text-lg font-bold mb-5 text-yellow-300">
+              অফিস ও যোগাযোগ
             </h3>
 
-            <div className="space-y-4 text-green-100">
-
-              <div className="flex items-center gap-3">
-                <MapPin className="text-yellow-300" size={18} />
-                <span>Dhaka, Bangladesh</span>
+            <div className="space-y-3.5 text-sm text-emerald-100/80">
+              <div className="flex items-start gap-2.5">
+                <MapPin className="text-yellow-300 shrink-0 mt-0.5" size={16} />
+                <span>সাভার ক্যান্টনমেন্ট, আশুলিয়া, ঢাকা-১৩৪৪, বাংলাদেশ</span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Phone className="text-yellow-300" size={18} />
-                <span>+880 1700-000000</span>
+              <div className="flex items-center gap-2.5">
+                <Phone className="text-yellow-300 shrink-0" size={16} />
+                <span>০১৯৮৮৮৮৩১০২ (সকাল ৯টা - রাত ৮টা)</span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <Mail className="text-yellow-300" size={18} />
-                <span>support@agromart.com</span>
+              <div className="flex items-center gap-2.5">
+                <Mail className="text-yellow-300 shrink-0" size={16} />
+                <span>support@agromart.ai</span>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-      {/* Newsletter */}
 
-      <div className="border-t border-green-700">
+      {/* Bottom Copyright */}
+      <div className="border-t border-gray-800">
+        <div className="container mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row justify-between items-center text-xs text-emerald-200/60">
+          <p>© {new Date().getFullYear()} AgroMart AI। সর্বস্বত্ব সংরক্ষিত।</p>
 
-        <div className="container mx-auto px-6 py-10">
-
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-
-            <div>
-
-              <h3 className="text-2xl font-semibold">
-                Subscribe to our Newsletter
-              </h3>
-
-              <p className="text-green-200 mt-2">
-                Get updates on new products and farming tips.
-              </p>
-
-            </div>
-
-            <div className="flex w-full lg:w-auto">
-
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full lg:w-80 border border-green-700 rounded-l-lg px-4 py-3 text-white outline-none"
-              />
-
-              <button className="bg-yellow-400 hover:bg-yellow-500 px-6 rounded-r-lg text-green-900 font-semibold transition flex items-center gap-2">
-
-                <Send size={18} />
-
-                Subscribe
-
-              </button>
-
-            </div>
-
+          <div className="flex gap-6 mt-3 md:mt-0">
+            <Link href="#" className="hover:text-yellow-300 transition">
+              গোপনীয়তা নীতি (Privacy Policy)
+            </Link>
+            <Link href="#" className="hover:text-yellow-300 transition">
+              শর্তাবলী (Terms & Conditions)
+            </Link>
+            <Link href="#" className="hover:text-yellow-300 transition">
+              সহায়তা কেন্দ্র
+            </Link>
           </div>
-
         </div>
-
       </div>
-
-      {/* Bottom */}
-
-      <div className="border-t border-green-700">
-
-        <div className="container mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center">
-
-          <p className="text-green-200 text-sm">
-            © {new Date().getFullYear()} AgroMart. All Rights Reserved.
-          </p>
-
-          <div className="flex gap-6 mt-4 md:mt-0 text-sm">
-
-            <Link href="#" className="hover:text-yellow-300">
-              Privacy Policy
-            </Link>
-
-            <Link href="#" className="hover:text-yellow-300">
-              Terms & Conditions
-            </Link>
-
-            <Link href="#" className="hover:text-yellow-300">
-              Help Center
-            </Link>
-
-          </div>
-
-        </div>
-
-      </div>
-
     </footer>
   );
 }

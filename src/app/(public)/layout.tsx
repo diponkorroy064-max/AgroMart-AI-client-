@@ -4,10 +4,9 @@ import React from 'react';
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className="w-full max-w-full flex flex-col min-h-screen overflow-x-clip">
       <Navbar />
-      {/* <header>Public Header</header> */}
-      <main>{children}</main>
+      <main className="grow w-full max-w-full overflow-x-clip">{children}</main>
       <Footer />
     </div>
   );
