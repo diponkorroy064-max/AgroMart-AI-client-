@@ -2,8 +2,8 @@ import { IProduct, ProductStatus } from "@/types/Product";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-const getAuthHeaders = () => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const getAuthHeaders = (customToken?: string) => {
+  const token = customToken || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -41,9 +41,10 @@ export interface AdminStatsResponse {
 /**
  * Get aggregated platform statistics for Admin Dashboard
  */
-export const getAdminStats = async (): Promise<AdminStatsResponse> => {
+export const getAdminStats = async (token?: string): Promise<AdminStatsResponse> => {
   const response = await fetch(`${API_URL}/admin/stats`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -59,14 +60,16 @@ export const getAdminStats = async (): Promise<AdminStatsResponse> => {
  */
 export const getAdminProducts = async (
   status?: string,
-  search?: string
+  search?: string,
+  token?: string
 ): Promise<{ products: IProduct[]; total: number }> => {
   const params = new URLSearchParams();
   if (status && status !== "all") params.append("status", status);
   if (search && search.trim()) params.append("search", search.trim());
 
   const response = await fetch(`${API_URL}/admin/products?${params.toString()}`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -82,11 +85,12 @@ export const getAdminProducts = async (
  */
 export const updateProductStatusByAdmin = async (
   productId: string,
-  status: ProductStatus
+  status: ProductStatus,
+  token?: string
 ) => {
   const response = await fetch(`${API_URL}/admin/products/${productId}/status`, {
     method: "PATCH",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
     body: JSON.stringify({ status }),
   });
 
@@ -101,9 +105,10 @@ export const updateProductStatusByAdmin = async (
 /**
  * Get all users across platform
  */
-export const getAdminUsers = async () => {
+export const getAdminUsers = async (token?: string) => {
   const response = await fetch(`${API_URL}/admin/users`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -117,10 +122,10 @@ export const getAdminUsers = async () => {
 /**
  * Update user role by admin
  */
-export const updateUserRoleByAdmin = async (userId: string, role: string) => {
+export const updateUserRoleByAdmin = async (userId: string, role: string, token?: string) => {
   const response = await fetch(`${API_URL}/admin/users/${userId}/role`, {
     method: "PATCH",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
     body: JSON.stringify({ role }),
   });
 
@@ -135,10 +140,10 @@ export const updateUserRoleByAdmin = async (userId: string, role: string) => {
 /**
  * Remove/delete a user by admin
  */
-export const deleteUserByAdmin = async (userId: string) => {
+export const deleteUserByAdmin = async (userId: string, token?: string) => {
   const response = await fetch(`${API_URL}/admin/users/${userId}`, {
     method: "DELETE",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
   });
 
   if (!response.ok) {
@@ -152,13 +157,14 @@ export const deleteUserByAdmin = async (userId: string) => {
 /**
  * Get all orders across marketplace
  */
-export const getAdminOrders = async (status?: string, search?: string) => {
+export const getAdminOrders = async (status?: string, search?: string, token?: string) => {
   const params = new URLSearchParams();
   if (status && status !== "all") params.append("status", status);
   if (search && search.trim()) params.append("search", search.trim());
 
   const response = await fetch(`${API_URL}/admin/orders?${params.toString()}`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(token),
+    cache: "no-store",
   });
 
   if (!response.ok) {

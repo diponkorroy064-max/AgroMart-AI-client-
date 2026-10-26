@@ -58,7 +58,7 @@ export default function NavbarUserNav() {
           </div>
 
           <div className="leading-tight pr-1">
-            <p className="text-xs font-bold text-gray-900 group-hover:text-emerald-700 truncate max-w-[120px] transition-colors">
+            <p className="text-xs font-bold text-gray-900 group-hover:text-emerald-700 truncate max-w-30 transition-colors">
               {user.name}
             </p>
             <span className="text-[10px] font-medium text-gray-500">

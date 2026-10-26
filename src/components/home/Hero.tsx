@@ -5,10 +5,10 @@ import { trendingSearches } from "@/data/home-data";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-white border-b border-gray-100 py-10 sm:py-14 lg:py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid items-center grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-12">
-        {/* Left Content Column */}
-        <div className="text-center lg:text-left lg:col-span-6">
+    <section className="relative overflow-hidden bg-white border-b border-gray-100 py-6 md:py-8 lg:py-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid items-center grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-12">
+        {/* Content Column: Below image on mobile (order-2), Left on desktop (lg:order-1) */}
+        <div className="order-2 lg:order-1 text-center lg:text-left lg:col-span-6">
           {/* Top Interactive Badge */}
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[11px] sm:text-xs font-semibold mb-3 shadow-2xs">
             <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
@@ -60,8 +60,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right Visual Showcase */}
-        <div className="relative lg:col-span-6 flex items-center justify-center w-full max-w-md sm:max-w-lg lg:max-w-none mx-auto">
+        {/* Image Showcase: Top on mobile (order-1), Right on desktop (lg:order-2) */}
+        <div className="order-1 lg:order-2 relative lg:col-span-6 flex items-center justify-center w-full max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-none mx-auto">
           {/* Visual Frame */}
           <div className="relative w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-emerald-100/90">
             <Image

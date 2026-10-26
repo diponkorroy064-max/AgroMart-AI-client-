@@ -1,5 +1,5 @@
 import { IUser, LoginData, RegisterData, AuthResponse, UpdateProfileData, UpdateProfileResponse } from "@/types/auth";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export const getFileUrl = (url?: string): string => {
   if (!url) return "";

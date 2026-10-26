@@ -1,15 +1,17 @@
-import React from "react";
 import Link from "next/link";
-import { getBlogPosts } from "@/lib/blog";
+import { getBlogs } from "@/lib/api/blog";
 import { BlogCard } from "@/components/blog";
 import { ArrowRight, Sprout } from "lucide-react";
 
+export default async function HomeBlogs() {
+  const latestPosts = await getBlogs({ limit: 4 });
 
-export default function HomeBlogs() {
-  const latestPosts = getBlogPosts().slice(0, 4);
+  if (!latestPosts || latestPosts.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="py-10 sm:py-14 bg-gray-50/60 border-t border-gray-100">
+    <section className="py-6 md:py-8 lg:py-10 bg-gray-50/60 border-t border-gray-100">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
@@ -36,10 +38,10 @@ export default function HomeBlogs() {
           </Link>
         </div>
 
-        {/* Compact Featured Blog Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        {/* Standard Grid Cards (Identical card layout to blogs page) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {latestPosts.map((post) => (
-            <BlogCard key={post.id} post={post} variant="compact" />
+            <BlogCard key={post.id || post._id} post={post} variant="default" />
           ))}
         </div>
       </div>

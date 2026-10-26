@@ -2,8 +2,8 @@ import { IProduct, ProductFormData, SellerProductStats } from "@/types/Product";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-const getAuthHeaders = () => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const getAuthHeaders = (customToken?: string) => {
+  const token = customToken || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -13,8 +13,8 @@ const getAuthHeaders = () => {
 /**
  * Upload product image
  */
-export const uploadProductImage = async (formData: FormData): Promise<{ image: string; url: string }> => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+export const uploadProductImage = async (formData: FormData, customToken?: string): Promise<{ image: string; url: string }> => {
+  const token = customToken || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
   const response = await fetch(`${API_URL}/products/upload`, {
     method: "POST",
     headers: {
@@ -68,12 +68,20 @@ export const getAllProducts = async ({
   maxPrice?: string;
   page?: number;
   limit?: number;
-} = {}) => {
+} = {}): Promise<{
+  products: IProduct[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+}> => {
   const params = new URLSearchParams();
-
   if (search) params.append("search", search);
-  if (category) params.append("category", category);
-  if (subcategory) params.append("subcategory", subcategory);
+  if (category && category !== "All" && category !== "সকল ক্যাটাগরি") {
+    params.append("category", category);
+  }
+  if (subcategory && subcategory !== "All" && subcategory !== "সকল উপ-ক্যাটাগরি") {
+    params.append("subcategory", subcategory);
+  }
   if (sort) params.append("sort", sort);
   if (minPrice) params.append("minPrice", minPrice);
   if (maxPrice) params.append("maxPrice", maxPrice);
@@ -92,7 +100,8 @@ export const getAllProducts = async ({
  */
 export const getSellerProducts = async (
   status?: string,
-  search?: string
+  search?: string,
+  customToken?: string
 ): Promise<{ products: IProduct[]; counts: SellerProductStats }> => {
   const params = new URLSearchParams();
   if (status && status !== "all") params.append("status", status);
@@ -100,7 +109,7 @@ export const getSellerProducts = async (
 
   const queryString = params.toString() ? `?${params.toString()}` : "";
   const response = await fetch(`${API_URL}/products/seller${queryString}`, {
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {
@@ -135,8 +144,8 @@ export const getSellerProducts = async (
 /**
  * Get seller's admin-approved products directly
  */
-export const getSellerApprovedProducts = async (): Promise<IProduct[]> => {
-  const res = await getSellerProducts("approved");
+export const getSellerApprovedProducts = async (customToken?: string): Promise<IProduct[]> => {
+  const res = await getSellerProducts("approved", undefined, customToken);
   return res.products;
 };
 
@@ -155,10 +164,10 @@ export const getProductById = async (productId: string): Promise<IProduct> => {
 /**
  * Create a new product (Seller)
  */
-export const createProduct = async (productData: ProductFormData) => {
+export const createProduct = async (productData: ProductFormData, customToken?: string) => {
   const response = await fetch(`${API_URL}/products`, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
     body: JSON.stringify(productData),
   });
 
@@ -175,11 +184,12 @@ export const createProduct = async (productData: ProductFormData) => {
  */
 export const updateProduct = async (
   productId: string,
-  productData: Partial<ProductFormData>
+  productData: Partial<ProductFormData>,
+  customToken?: string
 ) => {
   const response = await fetch(`${API_URL}/products/${productId}`, {
     method: "PUT",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
     body: JSON.stringify(productData),
   });
 
@@ -194,10 +204,10 @@ export const updateProduct = async (
 /**
  * Delete product (Seller)
  */
-export const deleteProduct = async (productId: string) => {
+export const deleteProduct = async (productId: string, customToken?: string) => {
   const response = await fetch(`${API_URL}/products/${productId}`, {
     method: "DELETE",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {

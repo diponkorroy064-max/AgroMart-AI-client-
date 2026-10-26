@@ -3,7 +3,7 @@ import TestimornialCard from "./TestimornialCard";
 
 export default function Testimonials() {
   return (
-    <section className="py-12 sm:py-16 bg-gray-50/60 border-t border-gray-100">
+    <section className="py-6 md:py-8 lg:py-10 bg-gray-50/60 border-t border-gray-100">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto mb-10">

@@ -17,6 +17,15 @@ function isJwtExpired(token: string): boolean {
   }
 }
 
+function setAuthCookie(token: string | null) {
+  if (typeof document === "undefined") return;
+  if (token) {
+    document.cookie = `token=${encodeURIComponent(token)}; path=/; max-age=604800; SameSite=Lax`;
+  } else {
+    document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
+  }
+}
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -32,9 +41,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.warn("সেশনের মেয়াদ শেষ হয়েছে, পুনরায় লগইন করুন।");
           localStorage.removeItem("token");
           localStorage.removeItem("user");
+          setAuthCookie(null);
           setToken(null);
           setUser(null);
         } else {
+          setAuthCookie(storedToken);
           setToken(storedToken);
           const parsed = JSON.parse(storedUser);
           setUser(parsed);
@@ -67,6 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = (newToken: string, newUser: IUser) => {
+    setAuthCookie(newToken);
     setToken(newToken);
     setUser(newUser);
     try {
@@ -78,6 +90,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
+    setAuthCookie(null);
     setToken(null);
     setUser(null);
     try {
@@ -104,10 +117,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const defaultAuthContext: IAuthContext = {
+  user: null,
+  token: null,
+  loading: false,
+  login: () => {},
+  logout: () => {},
+  updateUser: () => {},
+};
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    return defaultAuthContext;
   }
   return context;
 };

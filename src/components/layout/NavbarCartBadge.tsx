@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
@@ -21,7 +20,7 @@ export default function NavbarCartBadge() {
       <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
 
       {totalQuantity > 0 && (
-        <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 flex items-center justify-center text-[11px] font-extrabold text-white bg-linear-to-r from-emerald-600 to-green-500 rounded-full shadow-md animate-pulse">
+        <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 flex items-center justify-center text-[11px] font-extrabold text-white bg-linear-to-r from-emerald-600 to-green-500 rounded-full shadow-md animate-pulse">
           {totalQuantity > 99 ? "99+" : totalQuantity}
         </span>
       )}

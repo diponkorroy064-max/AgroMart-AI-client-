@@ -9,8 +9,8 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-const getAuthHeaders = () => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+const getAuthHeaders = (customToken?: string) => {
+  const token = customToken || (typeof window !== "undefined" ? localStorage.getItem("token") : null);
   return {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -20,15 +20,18 @@ const getAuthHeaders = () => {
 /**
  * Get inventory items with summary, filters, search & pagination
  */
-export const getInventory = async (params: {
-  search?: string;
-  category?: string;
-  status?: string;
-  sort?: string;
-  page?: number;
-  limit?: number;
-  sellerId?: string;
-} = {}): Promise<InventoryListResponse> => {
+export const getInventory = async (
+  params: {
+    search?: string;
+    category?: string;
+    status?: string;
+    sort?: string;
+    page?: number;
+    limit?: number;
+    sellerId?: string;
+  } = {},
+  customToken?: string
+): Promise<InventoryListResponse> => {
   const query = new URLSearchParams();
   if (params.search) query.append("search", params.search);
   if (params.category && params.category !== "All" && params.category !== "সকল ক্যাটাগরি") {
@@ -42,7 +45,7 @@ export const getInventory = async (params: {
 
   const response = await fetch(`${API_URL}/inventory?${query.toString()}`, {
     method: "GET",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {
@@ -56,10 +59,10 @@ export const getInventory = async (params: {
 /**
  * Adjust product stock (restock, write-off damage, manual adjustment, expired)
  */
-export const adjustStock = async (payload: StockAdjustPayload) => {
+export const adjustStock = async (payload: StockAdjustPayload, customToken?: string) => {
   const response = await fetch(`${API_URL}/inventory/adjust`, {
     method: "POST",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
     body: JSON.stringify(payload),
   });
 
@@ -76,11 +79,12 @@ export const adjustStock = async (payload: StockAdjustPayload) => {
  */
 export const updateInventorySettings = async (
   productId: string,
-  payload: InventorySettingsPayload
+  payload: InventorySettingsPayload,
+  customToken?: string
 ) => {
   const response = await fetch(`${API_URL}/inventory/settings/${productId}`, {
     method: "PATCH",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
     body: JSON.stringify(payload),
   });
 
@@ -95,13 +99,16 @@ export const updateInventorySettings = async (
 /**
  * Get stock movement audit logs
  */
-export const getStockMovements = async (params: {
-  productId?: string;
-  type?: string;
-  page?: number;
-  limit?: number;
-  sellerId?: string;
-} = {}): Promise<{
+export const getStockMovements = async (
+  params: {
+    productId?: string;
+    type?: string;
+    page?: number;
+    limit?: number;
+    sellerId?: string;
+  } = {},
+  customToken?: string
+): Promise<{
   success: boolean;
   movements: IStockMovement[];
   pagination: { page: number; limit: number; total: number; totalPages: number };
@@ -115,7 +122,7 @@ export const getStockMovements = async (params: {
 
   const response = await fetch(`${API_URL}/inventory/movements?${query.toString()}`, {
     method: "GET",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {
@@ -129,10 +136,10 @@ export const getStockMovements = async (params: {
 /**
  * Get stock & expiry alerts
  */
-export const getInventoryAlerts = async (): Promise<InventoryAlertsResponse> => {
+export const getInventoryAlerts = async (customToken?: string): Promise<InventoryAlertsResponse> => {
   const response = await fetch(`${API_URL}/inventory/alerts`, {
     method: "GET",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {
@@ -146,10 +153,10 @@ export const getInventoryAlerts = async (): Promise<InventoryAlertsResponse> => 
 /**
  * Get inventory valuation and movement reports
  */
-export const getInventoryReport = async (): Promise<InventoryReportResponse> => {
+export const getInventoryReport = async (customToken?: string): Promise<InventoryReportResponse> => {
   const response = await fetch(`${API_URL}/inventory/reports`, {
     method: "GET",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
   });
 
   if (!response.ok) {

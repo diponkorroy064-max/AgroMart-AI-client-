@@ -11,10 +11,10 @@ import {
   BookOpen,
 } from "lucide-react";
 import {
-  getBlogPostBySlug,
-  getRelatedBlogPosts,
-  getBlogPosts,
-} from "@/lib/blog";
+  getBlogBySlug,
+  getBlogs,
+  getBlogImageUrl,
+} from "@/lib/api/blog";
 import {
   BlogCard,
   BlogShareButton,
@@ -23,6 +23,9 @@ import {
   BlogMarketplaceBanner,
 } from "@/components/blog";
 import { Button } from "@/components/ui/Button";
+
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 interface BlogPostDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -35,7 +38,7 @@ export async function generateMetadata({
   params,
 }: BlogPostDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = (await getBlogBySlug(slug)) || (await getBlogBySlug(decodeURIComponent(slug)));
 
   if (!post) {
     return {
@@ -74,25 +77,15 @@ export async function generateMetadata({
   };
 }
 
-/**
- * Pre-render all existing blog post paths at build time.
- */
-export async function generateStaticParams() {
-  const posts = getBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
 export default async function BlogPostDetailPage({
   params,
 }: BlogPostDetailPageProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = (await getBlogBySlug(slug)) || (await getBlogBySlug(decodeURIComponent(slug)));
 
   if (!post) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center container mx-auto px-4 py-16">
+      <div className="min-h-[60vh] flex items-center justify-center w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center max-w-md bg-white p-8 rounded-2xl border border-slate-200/80 shadow-xs">
           <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4">
             <BookOpen className="w-6 h-6" />
@@ -113,11 +106,12 @@ export default async function BlogPostDetailPage({
     );
   }
 
-  const relatedPosts = getRelatedBlogPosts(slug, 3);
+  const allPosts = await getBlogs();
+  const relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
     <article className="min-h-screen bg-slate-50/40 text-slate-900 py-8 sm:py-12">
-      <div className="container mx-auto px-4 max-w-4xl space-y-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* 1. Minimalist Top Breadcrumb & Category */}
         <nav aria-label="ব্রেডক্রাম্ব" className="flex items-center justify-between gap-4">
           <Link
@@ -185,13 +179,13 @@ export default async function BlogPostDetailPage({
         </header>
 
         {/* 3. Featured Image */}
-        <div className="relative h-64 sm:h-96 lg:h-[420px] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-2xs">
+        <div className="relative h-64 sm:h-96 lg:h-[460px] w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-2xs">
           <Image
-            src={post.image}
+            src={getBlogImageUrl(post.image)}
             alt={post.title}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 896px"
+            sizes="(max-width: 1280px) 100vw, 1280px"
             className="object-cover"
           />
         </div>
@@ -201,7 +195,13 @@ export default async function BlogPostDetailPage({
 
         {/* 5. Main Article Body */}
         <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-2xs">
-          <BlogArticleBody sections={post.sections} />
+          {post.sections && post.sections.length > 0 ? (
+            <BlogArticleBody sections={post.sections} />
+          ) : post.content ? (
+            <div className="prose prose-emerald max-w-none text-slate-700 leading-relaxed space-y-4 whitespace-pre-line text-sm sm:text-base">
+              {post.content}
+            </div>
+          ) : null}
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
@@ -225,8 +225,8 @@ export default async function BlogPostDetailPage({
           <div className="mt-8 pt-6 border-t border-slate-100 bg-slate-50/60 rounded-xl p-4 sm:p-5 flex items-center gap-4">
             <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-slate-200 shadow-2xs">
               <Image
-                src={post.author.avatar}
-                alt={post.author.name}
+                src={post.author?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"}
+                alt={post.author?.name || "লেখক"}
                 fill
                 sizes="48px"
                 className="object-cover"
@@ -234,10 +234,10 @@ export default async function BlogPostDetailPage({
             </div>
             <div className="space-y-0.5">
               <h4 className="text-sm font-bold text-slate-900">
-                {post.author.name}
+                {post.author?.name || "অ্যাগ্রোমার্ট টিম"}
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                {post.author.role} • অ্যাগ্রোমার্ট কৃষি জ্ঞান ও গবেষণা বিভাগ
+                {post.author?.role || "কৃষি জ্ঞান ও গবেষণা বিভাগ"} • অ্যাগ্রোমার্ট
               </p>
             </div>
           </div>
@@ -246,7 +246,7 @@ export default async function BlogPostDetailPage({
         {/* 6. Marketplace Interconnect Banner (Shared Reusable Component) */}
         <BlogMarketplaceBanner />
 
-        {/* 7. Related Articles (Using Reusable BlogCard variant="compact") */}
+        {/* 7. Related Articles (Using Reusable BlogCard) */}
         {relatedPosts.length > 0 && (
           <section aria-labelledby="related-heading" className="space-y-5">
             <h2 id="related-heading" className="text-xl sm:text-2xl font-bold text-slate-900">
@@ -255,7 +255,7 @@ export default async function BlogPostDetailPage({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {relatedPosts.map((related) => (
-                <BlogCard key={related.id} post={related} variant="compact" />
+                <BlogCard key={related.id || related._id} post={related} variant="default" />
               ))}
             </div>
           </section>

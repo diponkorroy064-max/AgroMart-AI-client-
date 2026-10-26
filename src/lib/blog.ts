@@ -20,9 +20,9 @@ export function getBlogPosts(options?: BlogFilterOptions): BlogPost[] {
     const matchesSearch =
       !query ||
       post.title.toLowerCase().includes(query) ||
-      post.subtitle.toLowerCase().includes(query) ||
+      (post.subtitle ? post.subtitle.toLowerCase().includes(query) : false) ||
       post.excerpt.toLowerCase().includes(query) ||
-      post.tags.some((tag) => tag.toLowerCase().includes(query));
+      (post.tags || []).some((tag) => tag.toLowerCase().includes(query));
 
     return matchesCategory && matchesSearch;
   });

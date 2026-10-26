@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { User, Mail, Lock, AlertCircle, Loader2 } from "lucide-react";
+import { User, Mail, Lock, AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { registerUser } from "@/lib/api/auth";
 import { Input } from "@/components/forms/Input";
@@ -14,6 +14,7 @@ import { RegisterData } from "@/types/auth";
 export default function RegisterForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -54,7 +55,7 @@ export default function RegisterForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="relative">
-          <User className="absolute left-3 top-11 h-5 w-5 text-gray-400" />
+          <User className="absolute left-3.5 top-10.5 h-5 w-5 text-gray-400 pointer-events-none" />
           <Input
             label="আপনার পূর্ণ নাম"
             placeholder="যেমন: মোঃ রফিকুল ইসলাম"
@@ -62,13 +63,13 @@ export default function RegisterForm() {
               required: "নাম প্রদান করা আবশ্যক",
             })}
             error={errors.name?.message}
-            className="pl-10"
+            className="pl-11"
             disabled={isSubmitting}
           />
         </div>
 
         <div className="relative">
-          <Mail className="absolute left-3 top-11 h-5 w-5 text-gray-400" />
+          <Mail className="absolute left-3.5 top-10.5 h-5 w-5 text-gray-400 pointer-events-none" />
           <Input
             label="ইমেইল ঠিকানা"
             type="email"
@@ -77,16 +78,16 @@ export default function RegisterForm() {
               required: "ইমেইল প্রদান করা আবশ্যক",
             })}
             error={errors.email?.message}
-            className="pl-10"
+            className="pl-11"
             disabled={isSubmitting}
           />
         </div>
 
         <div className="relative">
-          <Lock className="absolute left-3 top-11 h-5 w-5 text-gray-400" />
+          <Lock className="absolute left-3.5 top-10.5 h-5 w-5 text-gray-400 pointer-events-none" />
           <Input
             label="পাসওয়ার্ড"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="••••••••"
             {...register("password", {
               required: "পাসওয়ার্ড প্রদান করা আবশ্যক",
@@ -96,9 +97,22 @@ export default function RegisterForm() {
               },
             })}
             error={errors.password?.message}
-            className="pl-10"
+            className="pl-11 pr-11"
             disabled={isSubmitting}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-3.5 top-10.5 p-1 text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer transition-colors"
+            title={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+            aria-label={showPassword ? "পাসওয়ার্ড লুকান" : "পাসওয়ার্ড দেখুন"}
+          >
+            {showPassword ? (
+              <EyeOff className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            ) : (
+              <Eye className="w-5 h-5 text-gray-400 hover:text-gray-600" />
+            )}
+          </button>
         </div>
 
         <Select

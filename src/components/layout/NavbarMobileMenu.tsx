@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,38 +23,45 @@ import { getFileUrl } from "@/lib/api/auth";
 
 export default function NavbarMobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [topOffset, setTopOffset] = useState(115);
+  const [topOffset, setTopOffset] = useState(60);
   const pathname = usePathname();
   const [prevPathname, setPrevPathname] = useState(pathname);
   const { user, logout } = useAuth();
 
   // Standard React hook to detect client hydration without cascading effect
   const mounted = useSyncExternalStore(
-    () => () => {},
+    () => () => { },
     () => true,
     () => false
   );
 
-  // Close menu automatically whenever route changes (in-render state transition)
+  // Close menu automatically whenever route changes
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setIsOpen(false);
   }
 
-  const toggle = () => setIsOpen((prev) => !prev);
+  // Accurately calculate the header's current bottom position
+  const updatePosition = useCallback(() => {
+    const header = document.querySelector("header");
+    if (header) {
+      const rect = header.getBoundingClientRect();
+      setTopOffset(Math.max(Math.round(rect.bottom), 0));
+    }
+  }, []);
+
+  const toggle = () => {
+    if (!isOpen) {
+      updatePosition();
+    }
+    setIsOpen((prev) => !prev);
+  };
+
   const close = () => setIsOpen(false);
 
-  // Handle position tracking, resize, escape key, and body scroll lock
+  // Handle position tracking, resize, escape key, and background scroll prevention
   useEffect(() => {
     if (!isOpen) return;
-
-    const updatePosition = () => {
-      const header = document.querySelector("header");
-      if (header) {
-        const rect = header.getBoundingClientRect();
-        setTopOffset(Math.max(Math.round(rect.bottom), 0));
-      }
-    };
 
     updatePosition();
 
@@ -70,21 +77,36 @@ export default function NavbarMobileMenu() {
       if (e.key === "Escape") setIsOpen(false);
     };
 
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("scroll", updatePosition);
-    window.addEventListener("keydown", handleKeyDown);
+    // Prevent background scrolling without setting document.body.style.overflow = "hidden",
+    // because overflow: hidden on body breaks position: sticky on <header>!
+    const handleTouchMove = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target?.closest(".navbar-mobile-scroll-panel")) {
+        e.preventDefault();
+      }
+    };
 
-    // Prevent background scrolling while menu is open
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const handleWheel = (e: WheelEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target?.closest(".navbar-mobile-scroll-panel")) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", updatePosition);
       window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("wheel", handleWheel);
     };
-  }, [isOpen]);
+  }, [isOpen, updatePosition]);
 
   return (
     <div className="lg:hidden">
@@ -112,7 +134,13 @@ export default function NavbarMobileMenu() {
           />
 
           {/* Dropdown panel */}
-          <div className="relative z-10 w-full bg-white border-b border-gray-200 shadow-2xl flex flex-col max-h-full overflow-y-auto overscroll-contain transition-all">
+          <div
+            className="navbar-mobile-scroll-panel relative z-10 w-full bg-white border-b border-gray-200 shadow-2xl flex flex-col min-h-0 overflow-y-auto overscroll-contain transition-all"
+            style={{
+              maxHeight: `calc(100dvh - ${topOffset}px)`,
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
             <div className="p-4 sm:p-5 space-y-4 max-w-lg mx-auto w-full pb-8">
               {/* User Info if logged in */}
               {user && (
@@ -226,7 +254,7 @@ export default function NavbarMobileMenu() {
               {/* Helpline quick strip */}
               <a
                 href={`tel:${SITE_HOTLINE}`}
-                className="p-3 rounded-xl bg-gray-50 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-200 text-center text-xs text-gray-600 hover:text-emerald-800 flex items-center justify-center gap-1.5 transition block"
+                className="p-3 rounded-xl bg-gray-50 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-200 text-center text-xs text-gray-600 hover:text-emerald-800 items-center justify-center gap-1.5 transition block"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-600" />
                 <span>জরুরি কৃষি হটলাইন: </span>

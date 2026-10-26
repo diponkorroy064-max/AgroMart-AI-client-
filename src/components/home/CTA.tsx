@@ -5,7 +5,7 @@ import { ctaTrustCues } from "@/data/home-data";
 
 export default function CTA() {
   return (
-    <section className="py-14 sm:py-20 bg-gray-50/50">
+    <section className="py-6 md:py-8 lg:py-10 bg-gray-50/50">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-linear-to-br from-emerald-800 via-green-800 to-teal-900 px-6 py-12 sm:px-12 sm:py-16 text-center text-white shadow-xl">
           {/* Subtle ambient blur highlights */}

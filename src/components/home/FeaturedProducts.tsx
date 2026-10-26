@@ -1,15 +1,28 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { Products } from "@/data/home-data";
-
+import { getAllProducts } from "@/lib/api/product";
+import { ProductCard } from "@/components/ui/ProductCard";
+import { IProduct } from "@/types/Product";
 
 export default async function FeaturedProducts() {
-  // const products = await fetchServerFeaturedProducts();
-  const displayProducts = Products.slice(0, 6);
+  let displayProducts: IProduct[] = [];
+  try {
+    const res = await getAllProducts({ limit: 6 });
+    if (res?.products && res.products.length > 0) {
+      displayProducts = res.products.slice(0, 6);
+    }
+  } catch (err) {
+    console.error("[FeaturedProducts] Failed to load server products:", err);
+  }
+
+  // Fallback to static products if server returned no products
+  if (displayProducts.length === 0) {
+    displayProducts = Products.slice(0, 6);
+  }
 
   return (
-    <section className="py-10 sm:py-14 bg-white border-b border-gray-100">
+    <section className="py-6 md:py-8 lg:py-10 bg-white border-b border-gray-100">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-8">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-2 border border-emerald-100">
@@ -26,36 +39,10 @@ export default async function FeaturedProducts() {
           </p>
         </div>
 
-        {/* Compact Product Cards: ONLY Picture, Name, and Price */}
+        {/* Product Cards using shared ProductCard component */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
           {displayProducts.map((product) => (
-            <Link
-              key={product._id}
-              href={`/products/${product._id}`}
-              className="group flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-2xs hover:border-emerald-300 hover:shadow-xs transition"
-            >
-              {/* Product Picture */}
-              <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
-                <Image
-                  src={product.image || "/placeholder.png"}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-
-              {/* Product Name & Price ONLY */}
-              <div className="p-2.5 sm:p-3 flex flex-col justify-between grow">
-                <h3 className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-emerald-700 transition line-clamp-2 leading-snug mb-2">
-                  {product.name}
-                </h3>
-
-                <p className="text-sm font-bold text-emerald-700">
-                  ৳ {product.price}
-                </p>
-              </div>
-            </Link>
+            <ProductCard key={String(product._id)} product={product} />
           ))}
         </div>
 

@@ -1,9 +1,8 @@
-import React from "react";
 import { howItWorksSteps } from "@/data/home-data";
 
 export default function HowItWorks() {
   return (
-    <section className="py-12 sm:py-16 bg-white border-b border-gray-100">
+    <section className="py-6 md:py-8 lg:py-10 bg-white border-b border-gray-100">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-10">
           <span className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-2 border border-emerald-100">

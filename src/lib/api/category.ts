@@ -8,8 +8,8 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
-const getAuthHeaders = () => {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const getAuthHeaders = (customToken?: string) => {
+  const token = customToken || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
   return {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -19,17 +19,20 @@ const getAuthHeaders = () => {
 /**
  * Fetch all categories with subcategories & product counts
  */
-export const getCategories = async (params: {
-  status?: string;
-  search?: string;
-} = {}): Promise<{ success: boolean; total: number; categories: ICategory[] }> => {
+export const getCategories = async (
+  params: {
+    status?: string;
+    search?: string;
+  } = {},
+  customToken?: string
+): Promise<{ success: boolean; total: number; categories: ICategory[] }> => {
   const query = new URLSearchParams();
   if (params.status && params.status !== 'all') query.append('status', params.status);
   if (params.search && params.search.trim()) query.append('search', params.search.trim());
 
   const res = await fetch(`${API_URL}/categories?${query.toString()}`, {
     method: 'GET',
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders(customToken),
     cache: 'no-store',
   });
 

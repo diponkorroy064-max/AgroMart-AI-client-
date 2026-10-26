@@ -16,6 +16,7 @@ import {
   User,
   Boxes,
   FolderTree,
+  BookOpen,
 } from 'lucide-react';
 import SidebarItem from './SidebarItem';
 import { useAuth } from '@/contexts/AuthContext';
@@ -120,6 +121,11 @@ export default function Sidebar({
             href: '/dashboard/admin/categories',
             icon: FolderTree,
             label: 'ক্যাটাগরি ও সাব-ক্যাটাগরি',
+          },
+          {
+            href: '/dashboard/admin/blogs',
+            icon: BookOpen,
+            label: 'কৃষি ব্লগ ব্যবস্থাপনা',
           },
           {
             href: '/dashboard/admin/users',
@@ -260,19 +266,12 @@ export default function Sidebar({
           মার্কেটপ্লেস
         </div>
 
-        {/* Back to main store */}
+        {/* Back to main store (Single marketplace link) */}
         <SidebarItem
           href="/"
           label="মূল মার্কেটপ্লেস"
           icon={<Store size={18} />}
-          isActive={false}
-          onClick={() => isMobile && setMobileOpen(false)}
-        />
-        <SidebarItem
-          href="/products"
-          label="সকল পণ্যসমূহ"
-          icon={<Package size={18} />}
-          isActive={false}
+          isActive={pathname === '/'}
           onClick={() => isMobile && setMobileOpen(false)}
         />
       </div>

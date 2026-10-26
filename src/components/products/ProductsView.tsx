@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import {
@@ -9,13 +8,12 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  Layers,
 } from "lucide-react";
 import { IProduct } from "@/types/Product";
 import { getAllProducts } from "@/lib/api/product";
 import { getCategories } from "@/lib/api/category";
 import { ICategory } from "@/types/Category";
-import { ProductList } from "@/components/ui/ProductList";
+import { ProductCard } from "@/components/ui/ProductCard";
 
 const sortOptions = [
   { value: "", label: "ডিফল্ট ক্রমানুসার (সর্বশেষ)" },
@@ -368,7 +366,11 @@ export function ProductsView() {
         </div>
       ) : (
         <div className="space-y-8">
-          <ProductList products={products} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3.5 sm:gap-4.5">
+            {products.map((product) => (
+              <ProductCard key={String(product._id)} product={product} />
+            ))}
+          </div>
 
           {/* Minimalist 15-Item Pagination Controls */}
           {totalPages > 1 && (

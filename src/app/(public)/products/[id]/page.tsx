@@ -9,6 +9,8 @@ import {
   PackageSearch,
 } from "lucide-react";
 import { getProductById } from "@/lib/api/product";
+import { getFileUrl } from "@/lib/api/auth";
+import { Products } from "@/data/home-data";
 import { IProduct } from "@/types/Product";
 import { ProductAddToCart } from "@/components/products/ProductAddToCart";
 import { FavoriteButton } from "@/components/products/FavoriteButton";
@@ -40,7 +42,10 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const product = await getProductById(id);
+    let product: IProduct | undefined = await getProductById(id);
+    if (!product) {
+      product = Products.find((p) => String(p._id) === String(id));
+    }
     if (product) {
       return {
         title: `${product.name} | AgroMart AI`,
@@ -50,7 +55,7 @@ export async function generateMetadata({
         openGraph: {
           title: `${product.name} | AgroMart AI`,
           description: product.description,
-          images: product.image ? [{ url: product.image }] : [],
+          images: product.image ? [{ url: getFileUrl(product.image) || product.image }] : [],
           type: "website",
         },
       };
@@ -75,6 +80,11 @@ export default async function ProductDetailPage({
     product = await getProductById(id);
   } catch {
     product = null;
+  }
+
+  // Fallback to static products if mock ID (prod-1, prod-2, etc.) or offline
+  if (!product) {
+    product = Products.find((p) => String(p._id) === String(id)) || null;
   }
 
   // Not Found State
@@ -181,7 +191,7 @@ export default async function ProductDetailPage({
             {/* Left: Product Image */}
             <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gray-50 dark:bg-gray-900 border border-gray-200/70 dark:border-gray-700/70">
               <Image
-                src={product.image || "/placeholder.png"}
+                src={getFileUrl(product.image) || product.image || "/placeholder.png"}
                 alt={product.name}
                 fill
                 priority

@@ -13,10 +13,11 @@ export interface BlogContentSection {
 }
 
 export interface BlogPost {
-  id: string;
+  _id?: string;
+  id?: string;
   slug: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   category: string;
   categorySlug: string;
   readTime: string;
@@ -25,11 +26,15 @@ export interface BlogPost {
   image: string;
   excerpt: string;
   featured?: boolean;
-  tags: string[];
-  keyTakeaways: string[];
-  sections: BlogContentSection[];
+  tags?: string[];
+  keyTakeaways?: string[];
+  sections?: BlogContentSection[];
+  content?: string;
+  isPublished?: boolean;
   relatedProductCategory?: string;
   relatedCategorySlug?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface QuickKrishiTip {
